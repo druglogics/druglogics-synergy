@@ -2,12 +2,16 @@
 ## Clone git repos##
 cd git
 git clone https://asmundf@bitbucket.org/asmundf/gitsbe.git -b gitsbe_aaf
+
 git clone https://asmundf@bitbucket.org/asmundf/drabme.git -b drabme_aaf
+
 git clone https://asmundf@bitbucket.org/asmundf/druglogics2.git
 
 ## Compile ##
 cd druglogics2
+
 mkdir build
+
 javac -d build -cp ../drabme/lib/combinatoricslib-2.1.jar:../drabme/lib/commons-math3-3.4.1.jar ../gitsbe/src/gitsbe/*.java ../drabme/src/drabme/*.java src/druglogics2/*.java
 
 ## Run ags example ##
