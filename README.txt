@@ -1,3 +1,19 @@
+# To install pipeline #
+
+cd git
+git clone https://asmundf@bitbucket.org/asmundf/gitsbe.git
+git clone https://asmundf@bitbucket.org/asmundf/drabme.git
+git clone https://asmundf@bitbucket.org/asmundf/druglogics2.git
+
+cd druglogics2
+
+# Compile #
+javac -d build -cp ../drabme/lib/combinatoricslib-2.1.jar:../drabme/lib/commons-math3-3.4.1.jar ../gitsbe/src/gitsbe/*.java ../drabme/src/drabme/*.java src/druglogics2/*.java
+
+# Run ags example #
+java -cp build:../drabme/lib/combinatoricslib-2.1.jar:../drabme/lib/commons-math3-3.4.1.jar druglogics2.Launcher example_run_ags/
+
+
 Two ways to launch druglogics pipeline:
 A) input directory
 B) command line arguments
