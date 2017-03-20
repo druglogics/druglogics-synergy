@@ -35,7 +35,7 @@ public class Launcher {
 		 */
 		
 		
-		args = new String[] {"example_run_ags_input"} ;
+		args = new String[] {"example_run_ags"} ;
 		
 		// Gitsbe input
 		String filenameNetwork = "" ;
@@ -106,7 +106,7 @@ public class Launcher {
 		    			System.out.println("Aborting, multiple steady state files detected: " + filename + ", " + filenameSteadyState);
 		    			return ;
 		    		}
-		    		filenameSteadyState = filename ;
+		    		filenameSteadyState = new File (directoryInput, filename).getAbsolutePath() ;
 		    	}
 		    	else if (filename.contains("config"))
 		    	{	
@@ -116,7 +116,7 @@ public class Launcher {
 		    			return ;
 		    		}
 		    	
-		    		filenameConfig = filename ;
+		    		filenameConfig = new File (directoryInput, filename).getAbsolutePath() ;
 		    	}
 		    	else if (filename.contains("network")) 
 		    	{
@@ -125,7 +125,7 @@ public class Launcher {
 		    			System.out.println("Aborting, multiple network files detected: " + filename + ", " + filenameNetwork);
 		    			return ;
 		    		}
-		    		filenameNetwork = filename ;
+		    		filenameNetwork = new File(directoryInput, filename).getAbsolutePath() ;
 		    	}
 		    	else if (filename.contains("drugs")) 
 		    	{
@@ -134,7 +134,7 @@ public class Launcher {
 		    			System.out.println("Aborting, multiple drug definition files detected: " + filename + ", " + filenameDrugs);
 		    			return ;
 		    		}
-		    		filenameDrugs = filename ;
+		    		filenameDrugs = new File(directoryInput, filename).getAbsolutePath() ;
 		    	}
 		    	else if (filename.contains("modeloutputs")) 
 		    	{
@@ -143,7 +143,7 @@ public class Launcher {
 		    			System.out.println("Aborting, multiple model output files detected: " + filename + ", " + filenameModelOutputs);
 		    			return ;
 		    		}
-		    		filenameModelOutputs = filename ;
+		    		filenameModelOutputs = new File (directoryInput, filename).getAbsolutePath() ;
 		    	}
 		    	else if (filename.contains("perturbations")) 
 		    	{
@@ -152,7 +152,7 @@ public class Launcher {
 		    			System.out.println("Aborting, multiple perturbation files detected: " + filename + ", " + filenameCombinations);
 		    			return ;
 		    		}
-		    		filenameCombinations = filename ;
+		    		filenameCombinations = new File (directoryInput, filename).getAbsolutePath() ;
 		    	}
 		    		
 		    	
