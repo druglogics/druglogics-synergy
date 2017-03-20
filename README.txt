@@ -1,8 +1,8 @@
 # To install pipeline #
 
 cd git
-git clone https://asmundf@bitbucket.org/asmundf/gitsbe.git
-git clone https://asmundf@bitbucket.org/asmundf/drabme.git
+git clone https://asmundf@bitbucket.org/asmundf/gitsbe.git -b gitsbe_aaf
+git clone https://asmundf@bitbucket.org/asmundf/drabme.git -b drabme_aaf
 git clone https://asmundf@bitbucket.org/asmundf/druglogics2.git
 
 cd druglogics2
