@@ -1,0 +1,8 @@
+#Name	Target
+PI	inhibits	PIK3CA
+PD	inhibits	MAP2K1	MAP2K2
+CT	inhibits	GSK3A	GSK3B
+BI	inhibits	MAPK14
+PK	inhibits	CTNNB1
+AK	inhibits	AKT	AKT1	AKT2	AKT3
+5Z	inhibits	MAP3K7

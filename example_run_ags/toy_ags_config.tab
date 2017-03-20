@@ -1,0 +1,80 @@
+# Gitsbe config file
+# Each line is a parameter name and value
+# Default parameters are given below
+#
+# Parameter	Value
+#
+
+experimental_systems:	20150908_cellines.txt
+
+network:	20150908_model.sif
+
+
+# Output verbosity level
+verbosity:	3
+
+# Preserve all temporary files in project tmp-folder (all model files generation by evolutionary algorithms
+preserve_tmp_files:	true
+
+# Model trimming
+# Preserve outputs
+preserve_outputs:	true
+
+# Preserve intputs
+preserve_intputs:	false
+
+# Invoke drug response module after automated model definitions
+invoke_drabme:	false
+
+location_drabme:	../drabme
+
+# Parameters for evolutionary algorithms
+# Number of simulations (evolutions) to run
+simulations:	3
+
+# Number of models per generation
+population:	10
+
+# Number of generations per simulation (or less if target_fitness is defined, below)
+generations:	10
+
+# Number of crossovers
+crossovers:	1
+
+# Number of models selected for next generation
+selection:	3
+
+# Type of mutations to introduce
+balancemutations:	3
+randommutations:	0
+complexmutations:	0
+familymutations:	0
+inhibitorymutations:	0
+activatorymutations:	0
+ormutations:	0
+andmutations:	0
+shufflemutations:	0
+
+# Target fitness threshold to stop evolution (0 means disabled)
+target_fitness:	0
+
+# Target fitness threshold to stop evolution in percent of max possible fitness given by steady state (0 means disabled)
+target_fitness_percent:	80
+
+# Factor to multiply number of mutations until initial phase is over (>0 stable states obtained)
+bootstrap_mutations_factor:	100
+
+# Factor to multiply number of mutations after initial phase is over (>0 stable states obtained)
+mutations_factor:	1
+
+# Factor to multiply number of regulator priority shuffles until initial phase is over
+bootstrap_shuffle_factor:	10
+
+# Factor to multiply number of regulator priority shuffles after initial phase is over
+shuffle_factor:	0
+
+# Number of models to save
+models_saved:	3
+
+# Threshold for savig models
+fitness_threshold:	0.1
