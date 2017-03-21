@@ -15,7 +15,7 @@ cd druglogics2
 
 mkdir build
 
-javac -d build -cp ../drabme/lib/combinatoricslib-2.1.jar:../drabme/lib/commons-math3-3.4.1.jar ../gitsbe/src/gitsbe/\*.java ../drabme/src/drabme/\*.java src/druglogics2/\*.java
+javac -d build -cp ../drabme/lib/combinatoricslib-2.1.jar:../drabme/lib/commons-math3-3.4.1.jar ../gitsbe/src/gitsbe/*.java ../drabme/src/drabme/*.java src/druglogics2/*.java
 ```
 ## Run ags example ##
 ```
