@@ -23,7 +23,7 @@ java -cp build:../drabme/lib/combinatoricslib-2.1.jar:../drabme/lib/commons-math
 ```
 # Howto #
 ## Input directory ##
-The recommended way to launch the pipeline is by supplying one argument specifying a directory. The directory should contain all relevant input files, and not more than one copy of each. Input files are identified by filename, and should contain a specific string:
+The recommended way to launch the pipeline is by supplying one argument specifying a directory, e.g. "example_run_ags". The directory should contain all relevant input files, and not more than one copy of each. Input files are identified by filename, and should contain a specific string:
 
 "steadystate"
 "config"
