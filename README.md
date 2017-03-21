@@ -39,4 +39,6 @@ It is also possible to launch the pipeline by specifying each input file as a se
 ## Command line arguments ##
 
 Usage: 
+```
 druglogics <project name> <filename network> <filename config file> <filename steady states file> <output directory> <directory models> <filename drugs> <filename model outputs> <directory tmp> [filename combinations]
+```
