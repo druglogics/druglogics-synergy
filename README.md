@@ -17,7 +17,7 @@ mkdir build
 javac -d build -cp ../drabme/lib/combinatoricslib-2.1.jar:../drabme/lib/commons-math3-3.4.1.jar ../gitsbe/src/gitsbe/*.java ../drabme/src/drabme/*.java src/druglogics2/*.java
 ```
 ## Run ags example ##
-Before you can run the pipeline make sure to install BNReduction (bnet) with Macalay2 v1.6 (later versions won't work) and boost v1.55. To run the pipeline, from the druglogics2 root directory, type:
+Before you can run the pipeline make sure to install BNReduction (bnet) with Macalay2 v1.6 (later versions won't work) and boost v1.55. The location of the directory bnet, containing the file BNReduction.sh, must be in the environment variable BNET_HOME. To run the pipeline, from the druglogics2 root directory, type:
 ```
 java -cp build:../drabme/lib/combinatoricslib-2.1.jar:../drabme/lib/commons-math3-3.4.1.jar druglogics2.Launcher example_run_ags/
 ```
