@@ -1,12 +1,12 @@
 # To install pipeline #
 ## Clone git repos##
-`cd git
+cd git
 
 git clone https://bitbucket.org/asmundf/gitsbe.git -b gitsbe_aaf
 
 git clone https://bitbucket.org/asmundf/drabme.git -b drabme_aaf
 
-git clone https://bitbucket.org/asmundf/druglogics2.git`
+git clone https://bitbucket.org/asmundf/druglogics2.git
 
 ## Compile ##
 cd druglogics2
