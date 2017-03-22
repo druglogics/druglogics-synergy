@@ -16,7 +16,7 @@ public class Launcher {
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss") ;
 		Calendar cal = Calendar.getInstance();
 		
-				// Check if location of BNReduction.sh is defined in environment variable BNET_HOME 
+		// Check if location of BNReduction.sh is defined in environment variable BNET_HOME 
 		if (System.getenv("BNET_HOME") == null)
 		{
 			System.out.println("Set environment variable BNET_HOME to point to location of BNReduction.sh");
@@ -33,9 +33,6 @@ public class Launcher {
 		 * 
 		 * Command-line arguments should have higher priority than arguments supplied by config file
 		 */
-		
-		
-		args = new String[] {"example_run_ags"} ;
 		
 		// Gitsbe input
 		String filenameNetwork = "" ;
@@ -204,85 +201,14 @@ public class Launcher {
 		Gitsbe gitsbe ;
 		Drabme drabme ;
 		
-		// -------------------------------------------------------------
-//		directoryOutput = "barbara" ;
-//		
-//		// make sure path to output directory is absolute, since BNreduction will be run from another working directory
-//		if ((directoryOutput.length() > 0) && !(new File (directoryOutput).isAbsolute()))
-//			directoryOutput = System.getProperty("user.dir") + File.separator + directoryOutput ;
-//
-//		
-//		filenameNetwork = directoryOutput + File.separator + "barbara_20170303_reversed.sif";
-//		filenameConfig = directoryOutput + File.separator + "barbara_config_20170318_RANDOM.tab" ;
-//		filenameSteadyStates = new String[] {directoryOutput + File.separator + "RANDOM_steadystate.tab"} ;
-//		
-//		projectName = "RANDOM" ;
-//		
-//		filenameModelOutputs = directoryOutput + File.separator + "modeloutputs_barbara_ags_20170318.txt" ;
-//		filenameDrugs = directoryOutput + File.separator + "drugpanel_barbara_20170303_reversed.txt" ;
-//		
-//		filenameCombinations = directoryOutput + File.separator + "barbara_perturbations.tab" ;
-//		directoryTmp = directoryOutput + File.separator + "tmp" ;
-//		
-//		directoryModels = directoryOutput + File.separator + "models" ;
-		
-		
-		
-		// -------------------------------------------------------------		
-				
-//		directoryOutput = "ags" ;
-//
-//		// make sure path to output directory is absolute, since BNreduction will be run from another working directory
-//				if ((directoryOutput.length() > 0) && !(new File (directoryOutput).isAbsolute()))
-//					directoryOutput = System.getProperty("user.dir") + File.separator + directoryOutput ;
-//				
-//		filenameNetwork = directoryOutput + File.separator + "20150827_ags_original.sif";
-//		filenameConfig = directoryOutput + File.separator + "barbara_config_20170318_RANDOM.tab" ;
-//		filenameSteadyStates = new String[] {directoryOutput + File.separator + "RANDOM_steadystate.tab"} ;
-//		
-//		projectName = "AGS_RANDOM" ;
-//		filenameModelOutputs = directoryOutput + File.separator + "20150824_ags_modeloutputs.txt" ;
-//		filenameDrugs = directoryOutput + File.separator + "20150824_ags_drugpanel.txt" ;
-//		filenameCombinations = directoryOutput + File.separator + "barbara_perturbations.tab" ;
-//		directoryTmp = directoryOutput + File.separator + "tmp" ;
-//		
-//		directoryModels = directoryOutput + File.separator + "models" ;
-		
-		// -------------------------------------------------------------		
-
-//		directoryOutput = "barba_topo_ags_ss_20170319" ;
-//		
-//		// make sure path to output directory is absolute, since BNreduction will be run from another working directory
-//				if ((directoryOutput.length() > 0) && !(new File (directoryOutput).isAbsolute()))
-//					directoryOutput = System.getProperty("user.dir") + File.separator + directoryOutput ;
-//				
-//		filenameNetwork = directoryOutput + File.separator + "barbara_20170303_reversed.sif";
-//		filenameConfig = directoryOutput + File.separator + "barbara_config_20170319.tab" ;
-//		filenameSteadyStates = new String[] {directoryOutput + File.separator + "AGS_steadystate_barbara.tab"} ;
-//		
-//		projectName = "barbara_topo_ags_ss" ;
-//		filenameModelOutputs = directoryOutput + File.separator + "modeloutputs_barbara_ags_20170318.txt" ;
-//		filenameDrugs = directoryOutput + File.separator + "drugpanel_barbara_20170303_reversed.txt" ;
-//		filenameCombinations = directoryOutput + File.separator + "barbara_perturbations.tab" ;
-//		directoryTmp = directoryOutput + File.separator + "tmp" ;
-//		
-//		directoryModels = directoryOutput + File.separator + "models" ;
-		
-		// -------------------------------------------------------------		
-		
-		
-		
-		// append date/time to output directory name to avoid conflicts
-//		directoryOutput += "_" + dateFormat.format(cal.getTime()) + File.separator ;
 		
 		// make sure path to output directory is absolute, since BNreduction will be run from another working directory
 		if ((directoryOutput.length() > 0) && !(new File (directoryOutput).isAbsolute()))
 			directoryOutput = System.getProperty("user.dir") + File.separator + directoryOutput ;
-				
-
+		
 		Thread t ;
 
-//		 Run Gitsbe
+		// Run Gitsbe
 	
 		
 		t = new Thread (new Gitsbe (
