@@ -94,9 +94,9 @@ public class Launcher {
 		    File[] files = new File(directoryInput).listFiles();
 			
 		    for (int i = 0; i < files.length; i++) {
-		    	String filename = files[i].getName().toLowerCase() ;
+		    	String filename = files[i].getName() ;
 		    	
-		    	if (filename.contains("steadystate"))
+		    	if (filename.toLowerCase().contains("steadystate"))
 		    	{
 		    		if (filenameSteadyState.length() > 0)
 		    		{
@@ -105,7 +105,7 @@ public class Launcher {
 		    		}
 		    		filenameSteadyState = new File (directoryInput, filename).getAbsolutePath() ;
 		    	}
-		    	else if (filename.contains("config"))
+		    	else if (filename.toLowerCase().contains("config"))
 		    	{	
 		    		if (filenameConfig.length() > 0)
 		    		{
@@ -115,7 +115,7 @@ public class Launcher {
 		    	
 		    		filenameConfig = new File (directoryInput, filename).getAbsolutePath() ;
 		    	}
-		    	else if (filename.contains("network")) 
+		    	else if (filename.toLowerCase().contains("network")) 
 		    	{
 		    		if (filenameNetwork.length() > 0)
 		    		{
@@ -124,7 +124,7 @@ public class Launcher {
 		    		}
 		    		filenameNetwork = new File(directoryInput, filename).getAbsolutePath() ;
 		    	}
-		    	else if (filename.contains("drugs")) 
+		    	else if (filename.toLowerCase().contains("drugpanel")) 
 		    	{
 		    		if (filenameDrugs.length() > 0)
 		    		{
@@ -133,7 +133,7 @@ public class Launcher {
 		    		}
 		    		filenameDrugs = new File(directoryInput, filename).getAbsolutePath() ;
 		    	}
-		    	else if (filename.contains("modeloutputs")) 
+		    	else if (filename.toLowerCase().contains("modeloutputs")) 
 		    	{
 		    		if (filenameModelOutputs.length() > 0)
 		    		{
@@ -142,7 +142,7 @@ public class Launcher {
 		    		}
 		    		filenameModelOutputs = new File (directoryInput, filename).getAbsolutePath() ;
 		    	}
-		    	else if (filename.contains("perturbations")) 
+		    	else if (filename.toLowerCase().contains("perturbations")) 
 		    	{
 		    		if (filenameCombinations.length() > 0)
 		    		{
