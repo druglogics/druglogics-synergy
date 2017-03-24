@@ -34,7 +34,7 @@ cd ../..
 ```
 To test BNReduction you can run 'Testing_BNReduction.sh' to see if all tests pass
 
-Dependency files can be found in the dep folder of this repository. The location of the directory bnet, containing the file BNReduction.sh, must be in the environment variable BNET_HOME. 
+Dependency files can be found in the dep folder of this repository. The location of the directory bnet, containing the file BNReduction.sh, must be in the environment variable BNET_HOME (be sure to replace "/path/to/bnet" with the actual location):
 ```
 export BNET_HOME=/path/to/bnet
 ```
