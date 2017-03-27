@@ -1,6 +1,6 @@
 # To install pipeline #
 ## Clone git repos##
-First, install all repositories gitsbe, drabme, and druglogics2:
+First, install all repositories gitsbe, drabme, and druglogics2. 
 ```
 git clone https://bitbucket.org/asmundf/gitsbe.git
 
@@ -8,6 +8,8 @@ git clone https://bitbucket.org/asmundf/drabme.git
 
 git clone https://bitbucket.org/asmundf/druglogics2.git
 ```
+If you want the latest development versions these would be the gitsbe_aaf and drabme_aaf branches. You can switch to a branch doing `git checkout gitsbe_aaf` and `git checkout drabme_aaf` from the repo directory.
+
 ## Compile ##
 ```
 cd druglogics2
