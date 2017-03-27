@@ -52,7 +52,7 @@ The recommended way to launch the pipeline is by supplying one argument specifyi
 "steadystate"
 "config"
 "network"
-"drugs"
+"drugpanel"
 "modeloutputs"
 "perturbations"
 
