@@ -46,7 +46,8 @@ public class Launcher {
 		String filenameDrugs = "" ;
 		String filenameModelOutputs = "" ;
 		String filenameCombinations = "" ;
-		String directoryTmp ;
+		String directoryTmpGitsbe ;
+		String directoryTmpDrabme ;
 		
 		if (args.length == 0)
 		{
@@ -67,7 +68,7 @@ public class Launcher {
 			filenameDrugs = args[6];
 			filenameModelOutputs = args[7];
 			filenameCombinations = args[8];
-			directoryTmp = args[4] + File.separator + args[9] ;
+			directoryTmpDrabme = args[4] + File.separator + args[9] ;
 		}
 		
 		if ((args.length == 1) || (args.length == 2))
@@ -85,7 +86,9 @@ public class Launcher {
 			
 			directoryOutput = new File(directoryInput, projectName + "_" + dateFormat.format(cal.getTime())).getAbsolutePath() ;
 			
-			directoryTmp = new File(directoryOutput, "tmp").getAbsolutePath() ;
+			directoryTmpGitsbe = new File(directoryOutput, "gitsbe_tmp").getAbsolutePath() ;
+
+			directoryTmpDrabme = new File(directoryOutput, "drabme_tmp").getAbsolutePath() ;
 			
 			directoryModels = new File(directoryOutput, "models").getAbsolutePath() ;
 					
@@ -216,7 +219,8 @@ public class Launcher {
 				filenameNetwork, 
 				filenameSteadyState, 
 				filenameConfig, 
-				directoryOutput)) ;
+				directoryOutput,
+				directoryTmpGitsbe)) ;
 		
 		t.start();
 		try {
@@ -229,8 +233,8 @@ public class Launcher {
 		
 
 		// make sure path to tmp directory is absolute, since BNreduction will be run from another working directory
-		if (!new File (directoryTmp).isAbsolute())
-			directoryTmp = System.getProperty("user.dir") + File.separator + directoryTmp ;
+		if (!new File (directoryTmpDrabme).isAbsolute())
+			directoryTmpDrabme = System.getProperty("user.dir") + File.separator + directoryTmpDrabme ;
 		
 		
 		// Run Drabme
@@ -245,7 +249,7 @@ public class Launcher {
 	    							filenameCombinations, 
 	    							filenameModelOutputs,
 	    							directoryOutput,
-	    							directoryTmp,
+	    							directoryTmpDrabme,
 	    							combosize));
 	    t.start();
 	    try {
