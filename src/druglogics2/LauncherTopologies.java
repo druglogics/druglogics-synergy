@@ -3,9 +3,11 @@ package druglogics2;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,7 +26,7 @@ public class LauncherTopologies {
 	final static String repoTopology = "topologyNetworks";
 
 	public static void main (String[] args) throws IOException {
-		
+
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss") ;
 		Calendar cal = Calendar.getInstance();
 
@@ -64,7 +66,7 @@ public class LauncherTopologies {
 
 		if (args.length == 0)
 		{
-			
+
 		}
 		if (args.length == 9)
 		{
@@ -216,6 +218,7 @@ public class LauncherTopologies {
 
 		//Read network file and store the data in a list
 		ArrayList<String> network = new ArrayList<String>();
+		ArrayList<String> hypotheses = new ArrayList<String>();
 		if(!(filenameNetwork.isEmpty())){
 			FileReader fileNetwork = new FileReader(filenameNetwork);
 			BufferedReader readerNetwork = new BufferedReader(fileNetwork);
@@ -230,7 +233,7 @@ public class LauncherTopologies {
 					readerNetwork.close();
 			}
 		}
-
+		
 		//Topology file contains causal relations: read topology file and check if each topology is found in the network
 		if(!(filenameTopologies.isEmpty())){
 
@@ -247,66 +250,120 @@ public class LauncherTopologies {
 				System.out.println("Existing repository for this specific set");
 			else
 				directoryout.mkdir();
-			
+
 			//Copy original network file into the topologies directory
 			File fileNetwork = new File(filenameNetwork);
 			CopyOption[] options = new CopyOption[]{
 					StandardCopyOption.REPLACE_EXISTING
 			}; 
-			
+
 			Path from = Paths.get(filenameNetwork);
 			Path to = Paths.get(directoryTopologies.getAbsolutePath() + File.separator + fileNetwork.getName());
+			Path to_tmp = Paths.get(directoryTopologies.getAbsolutePath() + File.separator + removeExtension(fileNetwork.getName()) + "_trimmed.sif");
 			try {
 				Files.copy(from, to, options);
+				Files.copy(from, to_tmp, options);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
-			// Read the topologies and check if they are in the original network file
+			// New file that will contain the network without the hypothetical relations
+			String new_fileNetwork = directoryTopologies.getAbsolutePath() + File.separator + removeExtension(fileNetwork.getName()) + "_trimmed.sif";
+
+			// Add the hypotheses (relations to test) in a list
 			FileReader filetopologies = new FileReader(filenameTopologies);
 			BufferedReader readerTopologies = new BufferedReader(filetopologies);
-
-			while(readerTopologies.ready()) {
-				BufferedWriter bw = null;
-				FileWriter writerNetwork = null;
-				boolean isFound = false;
-				String topo = readerTopologies.readLine().toString();
-				for(int i = 0; i < network.size(); i++)
-					if(network.get(i).equals(topo))
-						isFound = true;	
-
-				if(isFound == false){ // Causal relation not found in initial topology (filenameNetwork)
-					bw = null;
-					writerNetwork = null;
-					try{
-						//Create a new file with the network containing the new topology
-						fileNetwork = new File(directoryTopologies.getAbsolutePath()+ File.separator +removeExtension(filenameNetwork)+"_"+topo.replaceAll("[\\W+]", "")+".sif");
-						writerNetwork = new FileWriter(fileNetwork.getAbsolutePath(), true);
-						bw = new BufferedWriter(writerNetwork);	        			
-						bw.write(topo+"\n");
-						for(int i=0; i < network.size(); i++)
-							bw.append(network.get(i)+"\n");
-
-					} catch (IOException e){
-						e.printStackTrace();
-					} finally {
-
-						try{
-
-							if(bw != null)
-								bw.close();
-							if(writerNetwork != null)
-								writerNetwork.close();
-
-						} catch (IOException ex){
-							ex.printStackTrace();
-						}
-					}
+			try{
+				while(readerTopologies.ready()) {
+					hypotheses.add(readerTopologies.readLine());
 				}
+			} catch (IOException e){
+					e.printStackTrace();
+			}finally {
+					if(readerTopologies != null)
+						readerTopologies.close();
+			}
+			
+			for(int j = 0; j < hypotheses.size(); j++){
+				String topo = hypotheses.get(j).toString();
+				for(int i = 0; i < network.size(); i++)
+					if(!(network.get(i).equals(topo)))
+						removeLineFromFile(new_fileNetwork, topo);
 			}
 
 
+			// Clear the arraylist containing the network
+			network.clear();
 
+			//Fill the above list with the new network
+			// (e.g., without the relations that were redundant in the hypotheses and the initial network)
+			if(!(filenameNetwork.isEmpty())){
+				FileReader fileTrimmedNetwork = new FileReader(new_fileNetwork);
+				BufferedReader readerNetwork = new BufferedReader(fileTrimmedNetwork);
+				try{
+					while(readerNetwork.ready()){
+						network.add(readerNetwork.readLine());
+					}
+				} catch (IOException e){
+					e.printStackTrace();
+				}finally {
+					if(readerNetwork != null)
+						readerNetwork.close();
+				}
+			}
+
+			// Create a new network file for each hypothesis
+			for(int j = 0; j < hypotheses.size(); j++){
+				BufferedWriter bw = null;
+				FileWriter writerNetwork = null;
+				bw = null;
+				writerNetwork = null;
+				try{
+					fileNetwork = new File(directoryTopologies.getAbsolutePath() + File.separator + removeExtension(filenameNetwork) + "_" + hypotheses.get(j).toString().replaceAll("[\\W+]", "") + ".sif");
+					writerNetwork = new FileWriter(fileNetwork.getAbsolutePath(), false); // this will overwrite any existing file with the same name and path.
+					bw = new BufferedWriter(writerNetwork);	     
+					bw.write(hypotheses.get(j).toString()+"\n"); // add the relation to test
+					for(int i=0; i < network.size(); i++) // add all content of the network
+						bw.append(network.get(i)+"\n");
+
+				} catch (IOException e){
+					e.printStackTrace();
+				} finally {
+					if(bw != null)
+						bw.close();
+					if(writerNetwork != null)
+						writerNetwork.close();
+				}
+			}
+			
+			// Create a network file with all hypothesis
+			
+			//Copy original network file into the topologies directory
+			BufferedWriter bw = null;
+			FileWriter writerNetwork = null;
+			bw = null;
+			writerNetwork = null;
+			try{
+				fileNetwork = new File(directoryTopologies.getAbsolutePath() + File.separator + removeExtension(filenameNetwork) + "_allHypo.sif");
+				writerNetwork = new FileWriter(fileNetwork.getAbsolutePath(), false); // this will overwrite any existing file with the same name and path.
+				bw = new BufferedWriter(writerNetwork);	
+				for(int i = 0; i < hypotheses.size(); i++)
+					bw.append(hypotheses.get(i).toString()+"\n"); // add the relation to test
+				for(int i=0; i < network.size(); i++) // add all content of the network
+					bw.append(network.get(i)+"\n");
+
+			} catch (IOException e){
+				e.printStackTrace();
+			} finally {
+				if(bw != null)
+					bw.close();
+				if(writerNetwork != null)
+					writerNetwork.close();
+			}
+			
+			
+			
+			
 			Gitsbe gitsbe ;
 			Drabme drabme ;
 
@@ -327,9 +384,8 @@ public class LauncherTopologies {
 					directoryTmpGitsbe = new File(output, "gitsbe_tmp").getAbsolutePath() ;
 					directoryTmpDrabme = new File(output, "drabme_tmp").getAbsolutePath() ;
 					directoryModels = new File(output, "models").getAbsolutePath() ;
-					
+
 					String filenameNetworkTopology = System.getProperty("user.dir") + File.separator + projectName+ File.separator + repoTopology + File.separator + topologyFile.getName();
-					System.out.println(filenameNetworkTopology);
 					Thread t ;
 
 					// Run Gitsbe
@@ -350,8 +406,6 @@ public class LauncherTopologies {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-
-
 
 					// make sure path to tmp directory is absolute, since BNreduction will be run from another working directory
 					if (!new File (directoryTmpDrabme).isAbsolute())
@@ -405,5 +459,56 @@ public class LauncherTopologies {
 			return filename;
 
 		return filename.substring(0, extensionIndex);
+	}
+
+
+	public static void removeLineFromFile(String file, String lineToRemove) {
+
+		try {
+
+			File inFile = new File(file);
+
+			if (!inFile.isFile()) {
+				System.out.println("Parameter is not an existing file");
+				return;
+			}
+
+			//Construct the new file that will later be renamed to the original filename.
+			File tempFile = new File(inFile.getAbsolutePath() + ".tmp");
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
+
+			String line = null;
+
+			//Read from the original file and write to the new
+			//unless content matches data to be removed.
+			while ((line = br.readLine()) != null) {
+
+				if (!line.trim().equals(lineToRemove)) {
+
+					pw.println(line);
+					pw.flush();
+				}
+			}
+			pw.close();
+			br.close();
+
+			//Delete the original file
+			if (!inFile.delete()) {
+				System.out.println("Could not delete file");
+				return;
+			}
+
+			//Rename the new file to the filename the original file had.
+			if (!tempFile.renameTo(inFile))
+				System.out.println("Could not rename file");
+
+		}
+		catch (FileNotFoundException ex) {
+			ex.printStackTrace();
+		}
+		catch (IOException ex) {
+			ex.printStackTrace();
+		}
 	}
 }
