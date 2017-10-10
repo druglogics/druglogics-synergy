@@ -396,8 +396,8 @@ public class LauncherTopologies {
 							filenameNetworkTopology,
 							filenameSteadyState, 
 							filenameConfig,
-							output,
-							directoryTmpGitsbe)) ;
+							output
+							)) ;
 
 					t.start();
 					try {
