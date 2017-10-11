@@ -219,8 +219,8 @@ public class Launcher {
 				filenameNetwork, 
 				filenameSteadyState, 
 				filenameConfig, 
-				directoryOutput
-				)) ;
+				directoryOutput,
+				directoryTmpGitsbe)) ;
 		
 		t.start();
 		try {
