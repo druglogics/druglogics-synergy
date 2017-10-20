@@ -16,7 +16,10 @@ import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
+import java.util.ListIterator;
 
 import gitsbe.*;
 import drabme.*;
@@ -214,11 +217,9 @@ public class LauncherTopologies {
 			return ;
 		}
 
-
-
 		//Read network file and store the data in a list
-		ArrayList<String> network = new ArrayList<String>();
-		ArrayList<String> hypotheses = new ArrayList<String>();
+		ArrayList<String> network = new ArrayList<String>(); // .sif network file
+		ArrayList<String> hypotheses = new ArrayList<String>(); // list of hypothesis to test
 		if(!(filenameNetwork.isEmpty())){
 			FileReader fileNetwork = new FileReader(filenameNetwork);
 			BufferedReader readerNetwork = new BufferedReader(fileNetwork);
@@ -284,13 +285,17 @@ public class LauncherTopologies {
 						readerTopologies.close();
 			}
 			
+			//List of combination of hypothesis with powerset algorithm 
+			ArrayList<List<String>> combinationHypothesis = new ArrayList<>();
+			combinationHypothesis = (ArrayList<List<java.lang.String>>) getAllCombinations(hypotheses);
+			
+			//Remove binary hypothesis found in network
 			for(int j = 0; j < hypotheses.size(); j++){
 				String topo = hypotheses.get(j).toString();
 				for(int i = 0; i < network.size(); i++)
 					if(!(network.get(i).equals(topo)))
 						removeLineFromFile(new_fileNetwork, topo);
 			}
-
 
 			// Clear the arraylist containing the network
 			network.clear();
@@ -313,55 +318,33 @@ public class LauncherTopologies {
 			}
 
 			// Create a new network file for each hypothesis
-			for(int j = 0; j < hypotheses.size(); j++){
-				BufferedWriter bw = null;
-				FileWriter writerNetwork = null;
-				bw = null;
-				writerNetwork = null;
-				try{
-					fileNetwork = new File(directoryTopologies.getAbsolutePath() + File.separator + removeExtension(filenameNetwork) + "_" + hypotheses.get(j).toString().replaceAll("[\\W+]", "") + ".sif");
-					writerNetwork = new FileWriter(fileNetwork.getAbsolutePath(), false); // this will overwrite any existing file with the same name and path.
-					bw = new BufferedWriter(writerNetwork);	     
-					bw.write(hypotheses.get(j).toString()+"\n"); // add the relation to test
-					for(int i=0; i < network.size(); i++) // add all content of the network
-						bw.append(network.get(i)+"\n");
-
-				} catch (IOException e){
-					e.printStackTrace();
-				} finally {
-					if(bw != null)
-						bw.close();
-					if(writerNetwork != null)
-						writerNetwork.close();
+			for(int j = 0; j < combinationHypothesis.size(); j++){
+				if(!combinationHypothesis.get(j).isEmpty()){
+					BufferedWriter bw = null;
+					FileWriter writerNetwork = null;
+					bw = null;
+					writerNetwork = null;
+					try{
+						fileNetwork = new File(directoryTopologies.getAbsolutePath() + File.separator + removeExtension(filenameNetwork) + "_" + combinationHypothesis.get(j).toString().replaceAll("[\\W+]", "") + ".sif");
+						writerNetwork = new FileWriter(fileNetwork.getAbsolutePath(), false); // this will overwrite any existing file with the same name and path.
+						bw = new BufferedWriter(writerNetwork);	  
+						for(String hypo : combinationHypothesis.get(j)){
+							bw.write(hypo+"\n"); // add the relation to test
+						}
+						for(int i=0; i < network.size(); i++) // add all content of the network
+							bw.append(network.get(i)+"\n");
+	
+					} catch (IOException e){
+						e.printStackTrace();
+					} finally {
+						if(bw != null)
+							bw.close();
+						if(writerNetwork != null)
+							writerNetwork.close();
+					}
 				}
 			}
-			
-			// Create a network file with all hypothesis
-			
-			//Copy original network file into the topologies directory
-			BufferedWriter bw = null;
-			FileWriter writerNetwork = null;
-			bw = null;
-			writerNetwork = null;
-			try{
-				fileNetwork = new File(directoryTopologies.getAbsolutePath() + File.separator + removeExtension(filenameNetwork) + "_allHypo.sif");
-				writerNetwork = new FileWriter(fileNetwork.getAbsolutePath(), false); // this will overwrite any existing file with the same name and path.
-				bw = new BufferedWriter(writerNetwork);	
-				for(int i = 0; i < hypotheses.size(); i++)
-					bw.append(hypotheses.get(i).toString()+"\n"); // add the relation to test
-				for(int i=0; i < network.size(); i++) // add all content of the network
-					bw.append(network.get(i)+"\n");
 
-			} catch (IOException e){
-				e.printStackTrace();
-			} finally {
-				if(bw != null)
-					bw.close();
-				if(writerNetwork != null)
-					writerNetwork.close();
-			}
-			
-			
 			
 			
 			Gitsbe gitsbe ;
@@ -460,7 +443,23 @@ public class LauncherTopologies {
 
 		return filename.substring(0, extensionIndex);
 	}
-
+	
+	
+	public static <String> List<List<String>> getAllCombinations(List<String> initialhypotheses) {
+		// Power set algorithm: get a set of all combinations of hypothesis to test in the topology.
+		  List<List<String>> listOfCombinations = new ArrayList<>();
+		  for(String hypo : initialhypotheses){
+		    for(ListIterator<List<String>> combinationsIterator = listOfCombinations.listIterator(); combinationsIterator.hasNext();){
+		      List<String> combination = new ArrayList<>(combinationsIterator.next());
+		      combination.add(hypo);
+		      combinationsIterator.add(combination);
+		    }
+		    listOfCombinations.add(new ArrayList<>(Arrays.asList(hypo)));
+		  }
+		  listOfCombinations.add(new ArrayList<>());
+		  return listOfCombinations;
+		}
+	
 
 	public static void removeLineFromFile(String file, String lineToRemove) {
 
