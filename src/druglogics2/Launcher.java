@@ -37,7 +37,7 @@ public class Launcher {
 		// Gitsbe input
 		String filenameNetwork = "" ;
 		String filenameConfig = "" ;
-		String filenameSteadyState = "" ;
+		String filenameTrainingData = "" ;
 		String directoryOutput ;
 		
 		// Drabme input
@@ -59,7 +59,7 @@ public class Launcher {
 			// Gitsbe input
 			filenameNetwork = args[1];
 			filenameConfig = args[2];
-			filenameSteadyState = args[3] ;
+			filenameTrainingData = args[3] ;
 			directoryOutput = args[4] ;
 			
 			// Drabme input
@@ -99,14 +99,14 @@ public class Launcher {
 		    for (int i = 0; i < files.length; i++) {
 		    	String filename = files[i].getName() ;
 		    	
-		    	if (filename.toLowerCase().contains("steadystate"))
+		    	if (filename.toLowerCase().contains("training"))
 		    	{
-		    		if (filenameSteadyState.length() > 0)
+		    		if (filenameTrainingData.length() > 0)
 		    		{
-		    			System.out.println("Aborting, multiple steady state files detected: " + filename + ", " + filenameSteadyState);
+		    			System.out.println("Aborting, multiple training data files detected: " + filename + ", " + filenameTrainingData);
 		    			return ;
 		    		}
-		    		filenameSteadyState = new File (directoryInput, filename).getAbsolutePath() ;
+		    		filenameTrainingData = new File (directoryInput, filename).getAbsolutePath() ;
 		    	}
 		    	else if (filename.toLowerCase().contains("config"))
 		    	{	
@@ -160,9 +160,9 @@ public class Launcher {
 		    
 		    System.out.println(
 		    		"\nGitsbe input files:" +
-		    		"\nConfig:      \t" + filenameConfig +
-		    		"\nNetwork:     \t" + filenameNetwork +
-		    		"\nSteadystate:\t" + filenameSteadyState +
+		    		"\nConfig:       \t" + filenameConfig +
+		    		"\nNetwork:      \t" + filenameNetwork +
+		    		"\nTraining data:\t" + filenameTrainingData +
 		    		"\n\nDrabme input files" +
 		    		"\nDrugs:        \t" + filenameDrugs + 
 		    		"\nPerturbations:\t" + filenameCombinations +
@@ -217,9 +217,11 @@ public class Launcher {
 		t = new Thread (new Gitsbe (
 				projectName, 
 				filenameNetwork, 
-				filenameSteadyState, 
-				filenameConfig, 
-				directoryOutput
+				filenameTrainingData, 
+				filenameModelOutputs, 
+				filenameConfig,
+				directoryOutput,
+				directoryTmpGitsbe
 				)) ;
 		
 		t.start();
