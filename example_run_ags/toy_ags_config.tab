@@ -54,6 +54,7 @@ activatorymutations:	0
 ormutations:	0
 andmutations:	0
 shufflemutations:	0
+topology_mutations:	5
 
 # Target fitness threshold to stop evolution (0 means disabled)
 target_fitness:	0
