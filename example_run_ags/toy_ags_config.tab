@@ -74,6 +74,12 @@ bootstrap_shuffle_factor:	10
 # Factor to multiply number of regulator priority shuffles after initial phase is over
 shuffle_factor:	0
 
+# Factor to multiply number of topology mutations until initial phase is over
+bootstrap_topology_mutations_factor:	5
+
+# Factor to multiply number of topology mutations after initial phase is over
+topology_mutations_factor:	1
+
 # Number of models to save
 models_saved:	3
 
