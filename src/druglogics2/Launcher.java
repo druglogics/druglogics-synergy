@@ -252,6 +252,7 @@ public class Launcher {
 	    							filenameModelOutputs,
 	    							directoryOutput,
 	    							directoryTmpDrabme,
+	    							false,
 	    							combosize));
 	    t.start();
 	    try {
