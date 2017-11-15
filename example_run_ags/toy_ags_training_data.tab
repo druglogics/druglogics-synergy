@@ -1,0 +1,74 @@
+# AGS training data
+#
+# An unperturbed steady state is signified by a '-'
+#
+# Observations can be stated as floating point absolutes [0..1]
+# or as floating point relatives [0..1], prepended by a + or - sign to 
+# signify an observation relative to the unperturbed condition. 
+# +0 and -0 means no change.
+#
+# (Currently two or more specified conditions not supported, only relative
+# to unperturbed system, this could be implemented by e.g. +/- prepending of 
+# also input conditions)
+#
+# In this example steady state data and perturbation data is taken from 
+# Flobak et al. 2015, PLoS comput biol, see sup tables S3/S4 (steady state) and 
+# S6 (perturbation)
+#
+
+Condition
+-
+Response
+Antisurvival:0	CASP3:0	Prosurvival:1	CCND1:1	MYC:1	RAC_f:1	JNK_f:0	MAPK14:0	AKT1:1	MMP_f:1	PTEN:0	ERK_f:1	KRAS:1	PIK3CA:1	S6K_f:1	GSK3_f:0	TP53:0	BAX:0	BCL2:1	CASP8:0	CTNNB1:1	TCF7_f:1	NFKB_f:1
+Weight:1
+# Steady state observation across many publications
+
+Condition
+-
+Response
+globaloutput:1
+Weight:1
+
+Condition
+PIK3CA:0
+Response
+globaloutput:0
+Weight:0.1
+#AKT1:0
+# Ref PMID: 21245990, 21245990, 22336586, 23114914. 
+
+Condition
+CTNNB1:0
+Response
+globaloutput:0
+Weight:0.1
+
+Condition
+MAPK14:0
+Response
+globaloutput:1
+Weight:0.1
+
+Condition
+GSK3B:0
+Response
+globaloutput:1
+Weight:0.1
+
+Condition
+MAP2K1:0
+Response
+globaloutput:0
+Weight:0.1
+
+Condition
+MAP3K7:0
+Response
+globaloutput:0
+Weight:0.1
+
+Condition
+AKT1:0
+Response
+globaloutput:0
+Weight:0.1
