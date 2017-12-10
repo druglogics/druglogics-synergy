@@ -9,262 +9,198 @@ import gitsbe.*;
 import drabme.*;
 
 public class Launcher {
-
 	
-	public static void main (String[] args) {
+	// Gitsbe input
+	public String filenameNetwork = "";
+	public String filenameConfig = "";
+	public String filenameTrainingData = "";
+	public String directoryOutput;
 
-		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss") ;
-		Calendar cal = Calendar.getInstance();
-		
-		// Check if location of BNReduction.sh is defined in environment variable BNET_HOME 
-		if (System.getenv("BNET_HOME") == null)
-		{
-			System.out.println("Set environment variable BNET_HOME to point to location of BNReduction.sh");
-			System.out.println("BNReduction can be obtained from https://github.com/alanavc/BNReduction") ;
-			return ;
-		}
-		
-		// Configure Gitsbe based on command line arguments, set up example run if no parameters are specified
-		/*
-		 * The command line should also specify:
-		 * -r (for generating a 'random' cell line parameterization)
-		 * -p n	(for repeating analysis n times)
-		 * -v n (for setting verbosity level)
-		 * 
-		 * Command-line arguments should have higher priority than arguments supplied by config file
-		 */
-		
-		// Gitsbe input
-		String filenameNetwork = "" ;
-		String filenameConfig = "" ;
-		String filenameTrainingData = "" ;
-		String directoryOutput ;
-		
-		// Drabme input
-		String projectName ;
-		String directoryModels ;
-		String filenameDrugs = "" ;
-		String filenameModelOutputs = "" ;
-		String filenameCombinations = "" ;
-		String directoryTmpGitsbe ;
-		String directoryTmpDrabme ;
-		
-		if (args.length == 0)
-		{
+	// Drabme input
+	public String projectName;
+	public String directoryModels;
+	public String filenameDrugs = "";
+	public String filenameModelOutputs = "";
+	public String filenameCombinations = "";
+	public String directoryTmpGitsbe;
+	public String directoryTmpDrabme;
 	
-			
-		}
-		if (args.length == 10)
-		{
+	public static void main(String[] args) {
+		Launcher drugLogicsLauncher = new Launcher();
+		drugLogicsLauncher.start(args);
+	}
+	
+	public void start(String[] args) {
+		
+		if (environmentalVariableBNETisNULL()) return;
+		if (!setupAndValidateInput(args)) return;
+		
+		Thread thread = null;
+		
+		runGitsbe(thread);
+		runDrabme(thread);
+	}
+
+	private boolean setupAndValidateInput(String[] args) {
+
+		if (args.length == 10) {
 			// Gitsbe input
 			filenameNetwork = args[1];
 			filenameConfig = args[2];
-			filenameTrainingData = args[3] ;
-			directoryOutput = args[4] ;
-			
+			filenameTrainingData = args[3];
+			directoryOutput = args[4];
+
 			// Drabme input
-			projectName = args[0] ;
-			directoryModels = args[4] + File.separator + args[5] ;
+			projectName = args[0];
+			directoryModels = args[4] + File.separator + args[5];
 			filenameDrugs = args[6];
 			filenameModelOutputs = args[7];
 			filenameCombinations = args[8];
-			directoryTmpDrabme = args[4] + File.separator + args[9] ;
+			directoryTmpDrabme = args[4] + File.separator + args[9];
 		}
-		
-		if ((args.length == 1) || (args.length == 2))
-		{
-			String directoryInput = args[0] ;
-			
-			if ((directoryInput.length() > 0) && !(new File (directoryInput).isAbsolute()))
-				directoryInput = new File (System.getProperty("user.dir"), directoryInput).getAbsolutePath() ;
+		else if ((args.length == 1) || (args.length == 2)) {
+			String directoryInput = args[0];
+			directoryInput = makeDirectoryPathAbsolute(directoryInput);
 			
 			// Create project name unless specified
 			if (args.length == 2)
-				projectName = args[1].trim() ;
+				projectName = args[1].trim();
 			else
-				projectName = new File (directoryInput).getName() ;
+				projectName = new File(directoryInput).getName();
 			
-			directoryOutput = new File(directoryInput, projectName + "_" + dateFormat.format(cal.getTime())).getAbsolutePath() ;
+			DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+			Calendar calendarData = Calendar.getInstance();
 			
-			directoryTmpGitsbe = new File(directoryOutput, "gitsbe_tmp").getAbsolutePath() ;
-
-			directoryTmpDrabme = new File(directoryOutput, "drabme_tmp").getAbsolutePath() ;
+			directoryOutput = new File(directoryInput, projectName + "_" + dateFormat.format(calendarData.getTime())).getAbsolutePath();
+			directoryTmpGitsbe = new File(directoryOutput, "gitsbe_tmp").getAbsolutePath();
+			directoryTmpDrabme = new File(directoryOutput, "drabme_tmp").getAbsolutePath();
 			
-			directoryModels = new File(directoryOutput, "models").getAbsolutePath() ;
-					
-			System.out.println("Finding input files in directory: " + directoryInput) ;
-			// Load all files in input file directory, with filename identifying input type
-		    File[] files = new File(directoryInput).listFiles();
+			directoryOutput = makeDirectoryPathAbsolute(directoryOutput);
+			directoryTmpGitsbe = makeDirectoryPathAbsolute(directoryTmpGitsbe);
+			directoryTmpDrabme = makeDirectoryPathAbsolute(directoryTmpDrabme);
+			directoryModels = new File(directoryOutput, "models").getAbsolutePath();
 			
-		    for (int i = 0; i < files.length; i++) {
-		    	String filename = files[i].getName() ;
-		    	
-		    	if (filename.toLowerCase().contains("training"))
-		    	{
-		    		if (filenameTrainingData.length() > 0)
-		    		{
-		    			System.out.println("Aborting, multiple training data files detected: " + filename + ", " + filenameTrainingData);
-		    			return ;
-		    		}
-		    		filenameTrainingData = new File (directoryInput, filename).getAbsolutePath() ;
-		    	}
-		    	else if (filename.toLowerCase().contains("config"))
-		    	{	
-		    		if (filenameConfig.length() > 0)
-		    		{
-		    			System.out.println("Aborting, multiple config files detected: " + filename + ", " + filenameConfig);
-		    			return ;
-		    		}
-		    	
-		    		filenameConfig = new File (directoryInput, filename).getAbsolutePath() ;
-		    	}
-		    	else if (filename.toLowerCase().contains("network")) 
-		    	{
-		    		if (filenameNetwork.length() > 0)
-		    		{
-		    			System.out.println("Aborting, multiple network files detected: " + filename + ", " + filenameNetwork);
-		    			return ;
-		    		}
-		    		filenameNetwork = new File(directoryInput, filename).getAbsolutePath() ;
-		    	}
-		    	else if (filename.toLowerCase().contains("drugpanel")) 
-		    	{
-		    		if (filenameDrugs.length() > 0)
-		    		{
-		    			System.out.println("Aborting, multiple drug definition files detected: " + filename + ", " + filenameDrugs);
-		    			return ;
-		    		}
-		    		filenameDrugs = new File(directoryInput, filename).getAbsolutePath() ;
-		    	}
-		    	else if (filename.toLowerCase().contains("modeloutputs")) 
-		    	{
-		    		if (filenameModelOutputs.length() > 0)
-		    		{
-		    			System.out.println("Aborting, multiple model output files detected: " + filename + ", " + filenameModelOutputs);
-		    			return ;
-		    		}
-		    		filenameModelOutputs = new File (directoryInput, filename).getAbsolutePath() ;
-		    	}
-		    	else if (filename.toLowerCase().contains("perturbations")) 
-		    	{
-		    		if (filenameCombinations.length() > 0)
-		    		{
-		    			System.out.println("Aborting, multiple perturbation files detected: " + filename + ", " + filenameCombinations);
-		    			return ;
-		    		}
-		    		filenameCombinations = new File (directoryInput, filename).getAbsolutePath() ;
-		    	}
-		    		
-		    	
-		    }  
-		    
-		    System.out.println(
-		    		"\nGitsbe input files:" +
-		    		"\nConfig:       \t" + filenameConfig +
-		    		"\nNetwork:      \t" + filenameNetwork +
-		    		"\nTraining data:\t" + filenameTrainingData +
-		    		"\n\nDrabme input files" +
-		    		"\nDrugs:        \t" + filenameDrugs + 
-		    		"\nPerturbations:\t" + filenameCombinations +
-		    		"\nModel outputs:\t" + filenameModelOutputs) ;
-		    System.out.println ("\nOutput directory: " + directoryOutput + "\n") ;		
+			System.out.println("Finding input files in directory: " + directoryInput);
+			File[] files = new File(directoryInput).listFiles();
 			
-			
+			for (int i = 0; i < files.length; i++) {
+				String filename = files[i].getName();
+				if (!loadFileFromDirectory(filename,directoryInput)) return false;
+			}
+			printInputFilesMessage();
 		}
-		
 		else {
-			System.out.println("No user argumetns supplied") ;
-			System.out.println("Usage alternative 1: specify directory with input files:\n" +
-								"druglogics <input files directory> [project name]\n") ;
-			System.out.println("Usage alternative 2: specify input files as command line arguments:\n" + 
-								"druglogics <project name> <filename network> <filename config file> <filename steady states file> " +
-								"<output directory> <directory models> <filename drugs> <filename model outputs> " +
-								"<filename combinations> <directory tmp> ") ;
-			System.out.println("\nTestrun: setting up run with example files:");
-
-//			args = new String[] {"toy_ags",						// args[0]
-//								 "toy_ags_network.sif", 		// args[1]
-//								 "toy_ags_config.tab", 			// args[2]
-//								 "toy_ags_steadystate.tab",		// args[3]
-//								 "example_run_ags",				// args[4]
-//								 "models",						// args[5]
-//								 "toy_ags_drugs.tab",			// args[6]
-//								 "toy_ags_modeloutputs.tab",	// args[7]
-//								 "toy_ags_perturbations.tab",	// args[8]
-//								 "tmp"							// args[9]
-//								 } ;
-//			System.out.println("gitsbe " + args[1] + " " + args[2] + " " + args[3] + " " + args[4] + "\n\n")  ;
-//			System.out.println("drabme " + args[0] + " " + args[5] + " " + args[6] + " " + args[7] + " " + args[8] + " " + args[9] + "\n\n")  ;
-//			System.out.println("druglogics " + args [0] + " " + args[1] + " " + args[2] + " " + args[3] + " " 
-//								+ args[4] + " " + args[5] + " " + args[6] + " " + args[7] + " " + args[8] + " " + args[9] + "\n\n");
-			
-			return ;
+			printNoArgumentsMessage();
+			return false;
 		}
 		
-		Gitsbe gitsbe ;
-		Drabme drabme ;
-		
-		
-		// make sure path to output directory is absolute, since BNreduction will be run from another working directory
-		if ((directoryOutput.length() > 0) && !(new File (directoryOutput).isAbsolute()))
-			directoryOutput = System.getProperty("user.dir") + File.separator + directoryOutput ;
-		
-		Thread t ;
+		return true;
+	}
 
-		// Run Gitsbe
-	
-		
-		t = new Thread (new Gitsbe (
-				projectName, 
-				filenameNetwork, 
-				filenameTrainingData, 
-				filenameModelOutputs, 
-				filenameConfig,
-				directoryOutput,
-				directoryTmpGitsbe
-				)) ;
-		
-		t.start();
-		try {
-			t.join ();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	/** 
+	 * Loads file from input directory and checks for duplicates 
+	 * based on the existence of specified strings in the name of the file.
+	 * Returns true if there is no duplication and file was loaded correctly
+	 */
+	private boolean loadFileFromDirectory(String filename, String directoryInput) {
+		if (filename.toLowerCase().contains("training")) {
+			if (filenameTrainingData.length() > 0) {
+				System.out.println("Aborting, multiple training data files detected: " + filename + ", " + filenameTrainingData);
+				return false;
+			}
+			filenameTrainingData = new File(directoryInput, filename).getAbsolutePath();
+		} else if (filename.toLowerCase().contains("config")) {
+			if (filenameConfig.length() > 0) {
+				System.out.println("Aborting, multiple config files detected: " + filename + ", " + filenameConfig);
+				return false;
+			}
+			filenameConfig = new File(directoryInput, filename).getAbsolutePath();
+		} else if (filename.toLowerCase().contains("network")) {
+			if (filenameNetwork.length() > 0) {
+				System.out.println("Aborting, multiple network files detected: " + filename + ", " + filenameNetwork);
+				return false;
+			}
+			filenameNetwork = new File(directoryInput, filename).getAbsolutePath();
+		} else if (filename.toLowerCase().contains("drugpanel")) {
+			if (filenameDrugs.length() > 0) {System.out.println("Aborting, multiple drug definition files detected: " + filename + ", " + filenameDrugs);
+				return false;
+			}
+			filenameDrugs = new File(directoryInput, filename).getAbsolutePath();
+		} else if (filename.toLowerCase().contains("modeloutputs")) {
+			if (filenameModelOutputs.length() > 0) {
+				System.out.println("Aborting, multiple model output files detected: " + filename + ", " + filenameModelOutputs);
+				return false;
+			}
+			filenameModelOutputs = new File(directoryInput, filename).getAbsolutePath();
+		} else if (filename.toLowerCase().contains("perturbations")) {
+			if (filenameCombinations.length() > 0) {
+				System.out.println("Aborting, multiple perturbation files detected: " + filename + ", " + filenameCombinations);
+				return false;
+			}
+			filenameCombinations = new File(directoryInput, filename).getAbsolutePath();
 		}
-			
-		
+		return true;
+	}
 
-		// make sure path to tmp directory is absolute, since BNreduction will be run from another working directory
-		if (!new File (directoryTmpDrabme).isAbsolute())
-			directoryTmpDrabme = System.getProperty("user.dir") + File.separator + directoryTmpDrabme ;
-		
-		
-		// Run Drabme
-		
+	private void printInputFilesMessage() {
+		System.out.println("\nGitsbe input files:" + "\nConfig:       \t" + filenameConfig + "\nNetwork:      \t"
+				+ filenameNetwork + "\nTraining data:\t" + filenameTrainingData + "\n\nDrabme input files:"
+				+ "\nDrugs:        \t" + filenameDrugs + "\nPerturbations:\t" + filenameCombinations
+				+ "\nModel outputs:\t" + filenameModelOutputs);
+		System.out.println("\nOutput directory: " + directoryOutput + "\n");
+	}
+
+	private void printNoArgumentsMessage() {
+		System.out.println("No user arguments supplied");
+		System.out.println("Usage alternative 1: specify directory with input files:\n"
+				+ "druglogics <input files directory> [project name]\n");
+		System.out.println("Usage alternative 2: specify input files as command line arguments:\n"
+				+ "druglogics <project name> <filename network> <filename config file> <filename steady states file> "
+				+ "<output directory> <directory models> <filename drugs> <filename model outputs> "
+				+ "<filename combinations> <directory tmp> ");
+	}
+
+	private void runDrabme(Thread thread) {
 		int verbosity = 3;
 		int combosize = 2;
+		
+		thread = new Thread(new Drabme(verbosity, projectName, directoryModels, filenameDrugs, filenameCombinations,
+				filenameModelOutputs, directoryOutput, directoryTmpDrabme, false, combosize));
+		execute(thread);
+		
+	}
 
-	    t = new Thread(new Drabme(verbosity, 
-	    							projectName,
-	    							directoryModels,
-	    							filenameDrugs, 
-	    							filenameCombinations, 
-	    							filenameModelOutputs,
-	    							directoryOutput,
-	    							directoryTmpDrabme,
-	    							false,
-	    							combosize));
-	    t.start();
-	    try {
-	      t.join();
-	    } catch (InterruptedException e) {
-	      // TODO Auto-generated catch block
-	      e.printStackTrace();
-			
-			
+	private void runGitsbe(Thread thread) {
+		thread = new Thread(new Gitsbe(projectName, filenameNetwork, filenameTrainingData, filenameModelOutputs,
+				filenameConfig, directoryOutput, directoryTmpGitsbe));
+		execute(thread);
+	}
+	
+	private void execute(Thread thread) {
+		thread.start();
+		try {
+			thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
-		
-		
+	}
+
+	private static boolean environmentalVariableBNETisNULL() {
+		if (System.getenv("BNET_HOME") == null) {
+			System.out.println("Set environment variable BNET_HOME to point to location of BNReduction.sh");
+			System.out.println("BNReduction can be obtained from https://github.com/alanavc/BNReduction");
+			return true;
+		} else return false;
+	}
+	
+	/**
+	 * Makes the directory path absolute (if it is not already)
+	 * @param directory
+	 */
+	private static String makeDirectoryPathAbsolute(String directory) {
+		if ((directory.length() > 0) && !(new File(directory).isAbsolute()))
+			directory = new File(System.getProperty("user.dir"), directory).getAbsolutePath();
+		return directory;
 	}
 
 }
