@@ -20,8 +20,8 @@ preserve_tmp_files:	false
 # Preserve outputs
 preserve_outputs:	true
 
-# Preserve intputs
-preserve_intputs:	false
+# Preserve inputs
+preserve_inputs:	false
 
 # Invoke drug response module after automated model definitions
 invoke_drabme:	false
