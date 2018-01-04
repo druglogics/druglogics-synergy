@@ -1,3 +1,6 @@
+# include the names of the drugs in a tab seperated format
+# careful to include all the subsets in the combinations before 
+# and especially in the order that they were specified
 PI
 PD
 CT

@@ -1,4 +1,4 @@
-#Name	Target
+#Name	Effect	Target
 PI	inhibits	PIK3CA
 PD	inhibits	MAP2K1	MAP2K2
 CT	inhibits	GSK3A	GSK3B
