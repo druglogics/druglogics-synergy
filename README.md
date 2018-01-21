@@ -22,7 +22,7 @@ Before you can run the pipeline make sure to install BNReduction (bnet) with Mac
 Set up Macalay2, boost and BNReduction:
 ```
 cd ../druglogics_dep
-sudo apt-get install libpari-gmp3
+dpkg -i dep/libpari-gmp3_2.5.0-2ubuntu1_amd64.deb
 dpkg -i dep/Macaulay2-1.6-common.deb
 dpkg -i dep/Macaulay2-1.6-amd64-Linux-Ubuntu-14.04.deb
 unzip dep/bnet_reduction-master.zip -d dep
