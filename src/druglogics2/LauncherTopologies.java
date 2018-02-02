@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Calendar;
 
 import gitsbe.*;
@@ -19,7 +22,8 @@ public class LauncherTopologies {
 	// Global input
 	public String projectName;
 	public String directoryOutput;
-
+	public String directoryTopologies;
+	
 	// Gitsbe input
 	public String filenameNetwork = "";
 	public String filenameConfig = "";
@@ -202,7 +206,7 @@ public class LauncherTopologies {
 
 		// Create a new directory to store the different networks with the topologies to
 		// test
-		String directoryTopologies = new File(directoryOutput, "topologyNetworks").getAbsolutePath();
+		directoryTopologies = new File(directoryOutput, "topologyNetworks").getAbsolutePath();
 		createDirectory(directoryTopologies);
 
 		// Copy original network file into the topologies directory and create a
@@ -215,6 +219,10 @@ public class LauncherTopologies {
 
 		// Read the topologies file and store data in the hypotheses list
 		ArrayList<String> hypotheses = loadTopologiesFile();
+
+		// List of combination of hypothesis with powerset algorithm
+		ArrayList<List<String>> combinationHypothesis = new ArrayList<>();
+		combinationHypothesis = (ArrayList<List<java.lang.String>>) getAllCombinations(hypotheses);
 
 		// Remove from the trimmed network file the hypotheses interactions
 		for (int j = 0; j < hypotheses.size(); j++) {
@@ -233,49 +241,52 @@ public class LauncherTopologies {
 		// initial network)
 		network = loadTrimmedNetworkFile(trimmedNetworkFile);
 
-		createNewNetworkFileForEachHypothesis(hypotheses, network, directoryTopologies);
-		createAllHypothesesNetworkFile(hypotheses, network, directoryTopologies);
-
-		// Iterate over each file in the directory containing the different topologies
+		createNewNetworkFileForEachHypothesis(combinationHypothesis, network);
+		
+		ArrayList<File> topologyFilesList = new ArrayList<>();
 		for (File topologyFile : (new File(directoryTopologies)).listFiles()) {
-				
-				// Create the specified topology directory where gitsbe and drabme will run
-				String topologyDirectoryOutput = new File(directoryOutput) + File.separator
-						+ topologyFile.getName().substring(0, topologyFile.getName().lastIndexOf('.'));
-				topologyDirectoryOutput = makeDirectoryPathAbsolute(topologyDirectoryOutput);
-
-				if (!createDirectory(topologyDirectoryOutput)) {
-					System.out.println("ERROR: Couldn't create the directory: " + topologyDirectoryOutput);
-					break;
-				}
-
-				String filenameNetworkTopology = new File(directoryTopologies, topologyFile.getName())
-						.getAbsolutePath();
-
-				// Set tmp directories and models directory according to the topology tested
-				directoryTmpGitsbe = new File(topologyDirectoryOutput, "gitsbe_tmp").getAbsolutePath();
-				directoryTmpDrabme = new File(topologyDirectoryOutput, "drabme_tmp").getAbsolutePath();
-				directoryModels = new File(topologyDirectoryOutput, "models").getAbsolutePath();
-
-				directoryTmpGitsbe = makeDirectoryPathAbsolute(directoryTmpGitsbe);
-				directoryTmpDrabme = makeDirectoryPathAbsolute(directoryTmpDrabme);
-
-				Thread thread;
-
-				// Run Gitsbe
-				thread = new Thread(new Gitsbe(projectName, filenameNetworkTopology, filenameTrainingData,
-						filenameModelOutputs, filenameConfig, topologyDirectoryOutput, directoryTmpGitsbe));
-				execute(thread);
-
-				// Run Drabme
-				int verbosity = 3;
-				int combosize = 2;
-
-				thread = new Thread(
-						new Drabme(verbosity, projectName, directoryModels, filenameDrugs, filenameCombinations,
-								filenameModelOutputs, topologyDirectoryOutput, directoryTmpDrabme, false, combosize));
-				execute(thread);
+			topologyFilesList.add(topologyFile);
 		}
+		
+		topologyFilesList.stream().forEach(topologyFile -> runPipelineWithSpecifiedTopology(topologyFile));
+	}
+
+	private void runPipelineWithSpecifiedTopology(File topologyFile) {
+
+		// Create the specified topology directory where gitsbe and drabme will run
+		String topologyDirectoryOutput = new File(directoryOutput) + File.separator
+				+ topologyFile.getName().substring(0, topologyFile.getName().lastIndexOf('.'));
+		topologyDirectoryOutput = makeDirectoryPathAbsolute(topologyDirectoryOutput);
+
+		if (!createDirectory(topologyDirectoryOutput)) {
+			System.out.println("ERROR: Couldn't create the directory: " + topologyDirectoryOutput);
+			return;
+		}
+
+		String filenameNetworkTopology = new File(directoryTopologies, topologyFile.getName()).getAbsolutePath();
+
+		// Set tmp directories and models directory according to the topology tested
+		directoryTmpGitsbe = new File(topologyDirectoryOutput, "gitsbe_tmp").getAbsolutePath();
+		directoryTmpDrabme = new File(topologyDirectoryOutput, "drabme_tmp").getAbsolutePath();
+		directoryModels = new File(topologyDirectoryOutput, "models").getAbsolutePath();
+
+		directoryTmpGitsbe = makeDirectoryPathAbsolute(directoryTmpGitsbe);
+		directoryTmpDrabme = makeDirectoryPathAbsolute(directoryTmpDrabme);
+
+		Thread thread;
+
+		// Run Gitsbe
+		thread = new Thread(new Gitsbe(projectName, filenameNetworkTopology, filenameTrainingData,
+				filenameModelOutputs, filenameConfig, topologyDirectoryOutput, directoryTmpGitsbe));
+		execute(thread);
+
+		// Run Drabme
+		int verbosity = 3;
+		int combosize = 2;
+
+		thread = new Thread(new Drabme(verbosity, projectName, directoryModels, filenameDrugs, filenameCombinations,
+				filenameModelOutputs, topologyDirectoryOutput, directoryTmpDrabme, false, combosize));
+		execute(thread);
 	}
 
 	private void execute(Thread thread) {
@@ -287,61 +298,66 @@ public class LauncherTopologies {
 		}
 	}
 
-	private void createAllHypothesesNetworkFile(ArrayList<String> hypotheses, ArrayList<String> network,
-			String directoryTopologies) throws IOException {
-		BufferedWriter bw = null;
-		FileWriter writerNetwork = null;
-		bw = null;
-		writerNetwork = null;
-		try {
-			File fileNetwork = new File(
-					directoryTopologies + File.separator + removeExtension(filenameNetwork) + "_allHypo.sif");
-			writerNetwork = new FileWriter(fileNetwork.getAbsolutePath(), false); // this will overwrite any
-																					// existing file with the same
-																					// name and path.
-			bw = new BufferedWriter(writerNetwork);
-			for (int i = 0; i < hypotheses.size(); i++)
-				bw.append(hypotheses.get(i).toString() + "\n"); // add the relation to test
-			for (int i = 0; i < network.size(); i++) // add all content of the (trimmed of the hypotheses) network
-				bw.append(network.get(i) + "\n");
+	private void createNewNetworkFileForEachHypothesis(ArrayList<List<String>> combinationHypothesis,
+			ArrayList<String> network) throws IOException {
+		for (int j = 0; j < combinationHypothesis.size(); j++) {
+			if (!combinationHypothesis.get(j).isEmpty()) {
+				BufferedWriter bw = null;
+				FileWriter writerNetwork = null;
+				bw = null;
+				writerNetwork = null;
+				try {
+					String topologyFilename = directoryTopologies + File.separator + removeExtension(filenameNetwork);
+					for (String interaction : combinationHypothesis.get(j))
+						topologyFilename = topologyFilename + "_" + interaction.replaceAll("[\\W+]", "");
+					topologyFilename = topologyFilename + ".sif";
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (bw != null)
-				bw.close();
-			if (writerNetwork != null)
-				writerNetwork.close();
+					File fileNetwork = new File(topologyFilename);
+
+					// This will overwrite any existing file with the same name and path.
+					writerNetwork = new FileWriter(fileNetwork.getAbsolutePath(), false);
+
+					bw = new BufferedWriter(writerNetwork);
+					for (String hypothesis : combinationHypothesis.get(j)) {
+						bw.write(hypothesis + "\n"); // add the relation to test
+					}
+
+					// add all content of the (trimmed of the hypotheses) network
+					for (int i = 0; i < network.size(); i++)
+						bw.append(network.get(i) + "\n");
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				} finally {
+					if (bw != null)
+						bw.close();
+					if (writerNetwork != null)
+						writerNetwork.close();
+				}
+			}
 		}
 	}
 
-	private void createNewNetworkFileForEachHypothesis(ArrayList<String> hypotheses, ArrayList<String> network,
-			String directoryTopologies) throws IOException {
-		for (int j = 0; j < hypotheses.size(); j++) {
-			BufferedWriter bw = null;
-			FileWriter writerNetwork = null;
-			bw = null;
-			writerNetwork = null;
-			try {
-				File fileNetwork = new File(directoryTopologies + File.separator + removeExtension(filenameNetwork)
-						+ "_" + hypotheses.get(j).toString().replaceAll("[\\W+]", "") + ".sif");
-				writerNetwork = new FileWriter(fileNetwork.getAbsolutePath(), false); // this will overwrite any
-																						// existing file with the
-																						// same name and path.
-				bw = new BufferedWriter(writerNetwork);
-				bw.write(hypotheses.get(j).toString() + "\n"); // add the relation to test
-				for (int i = 0; i < network.size(); i++) // add all content of the (trimmed of the hypotheses) network
-					bw.append(network.get(i) + "\n");
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				if (bw != null)
-					bw.close();
-				if (writerNetwork != null)
-					writerNetwork.close();
+	/**
+	 * Returns a list of all combinations of hypotheses to test in the topology using
+	 * a power set algorithm
+	 * 
+	 * @param initialhypotheses
+	 * @return
+	 */
+	public static List<List<String>> getAllCombinations(List<String> initialhypotheses) {
+		List<List<String>> listOfCombinations = new ArrayList<>();
+		for (String hypo : initialhypotheses) {
+			for (ListIterator<List<String>> combinationsIterator = listOfCombinations
+					.listIterator(); combinationsIterator.hasNext();) {
+				List<String> combination = new ArrayList<>(combinationsIterator.next());
+				combination.add(hypo);
+				combinationsIterator.add(combination);
 			}
+			listOfCombinations.add(new ArrayList<>(Arrays.asList(hypo)));
 		}
+		listOfCombinations.add(new ArrayList<>());
+		return listOfCombinations;
 	}
 
 	private ArrayList<String> loadTrimmedNetworkFile(String trimmedNetworkFile) {
