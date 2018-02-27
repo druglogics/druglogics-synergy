@@ -1,4 +1,7 @@
 # How to install pipeline #
+
+Requires Java 8
+
 ## Clone git repos##
 First, install all repositories: gitsbe, drabme, druglogics2 and druglogics_dep. 
 ```
