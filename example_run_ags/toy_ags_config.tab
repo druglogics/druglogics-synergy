@@ -25,6 +25,10 @@ simulations:	3
 # Run simulations in parallel
 parallel_simulations:	true
 
+# Maximum number (>1) of allowed parallel simulations
+# The standard value would be to have as many parallel simulations as the machine's Cores (reduce it if too many parallel simulations are causing issues)
+forkJoinPoolSize:	4
+
 # Number of generations per simulation (or less if target_fitness is reached, see below)
 generations:	10
 
