@@ -189,6 +189,7 @@ public class Launcher {
 			thread.join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 
