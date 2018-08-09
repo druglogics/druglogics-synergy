@@ -1,13 +1,13 @@
-package druglogics2;
+package eu.druglogics.druglogics2;
 
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import static gitsbe.Util.*;
-import gitsbe.*;
-import drabme.*;
+import static eu.druglogics.gitsbe.util.Util.*;
+import eu.druglogics.gitsbe.*;
+import eu.druglogics.drabme.*;
 
 public class Launcher {
 
