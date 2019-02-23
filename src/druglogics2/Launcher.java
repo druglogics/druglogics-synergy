@@ -46,6 +46,11 @@ public class Launcher {
 
 	private boolean setupAndValidateInput(String[] args) {
 
+		for (int i = 0; i < args.length; i++) {
+			System.out.println("arg[" + i + "]: " + 
+		args[i]);
+		}
+		
 		if (args.length == 10) {
 			// Gitsbe input
 			filenameNetwork = args[1];
@@ -60,6 +65,8 @@ public class Launcher {
 			filenameModelOutputs = args[7];
 			filenameCombinations = args[8];
 			directoryTmpDrabme = args[4] + File.separator + args[9];
+			directoryTmpGitsbe = new File(directoryOutput, "gitsbe_tmp").getAbsolutePath();
+
 		} else if ((args.length == 1) || (args.length == 2)) {
 			String directoryInput = args[0];
 			directoryInput = makeDirectoryPathAbsolute(directoryInput);
