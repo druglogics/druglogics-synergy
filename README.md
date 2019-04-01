@@ -1,10 +1,13 @@
 # druglogics2
 
-This module contains the DrugLogics Pipeline Launcher. It gets all necessary information from an input directory and runs sequentially the [Gitsbe](https://bitbucket.org/asmundf/gitsbe/src/master/) and [Drabme](https://bitbucket.org/asmundf/drabme/src/master/) modules.
+This module contains the DrugLogics Pipeline Launcher. It gets all necessary 
+input from a directory and runs sequentially the 
+[Gitsbe](https://bitbucket.org/asmundf/gitsbe/src/master/) and 
+[Drabme](https://bitbucket.org/asmundf/drabme/src/master/) modules.
 
-# Install
+## Install
 
-First, follow the installation notes in:
+Follow the installation notes in the next order:
 - [BNReduction dependencies](https://bitbucket.org/asmundf/druglogics_dep/src/master/)
 - [Gitsbe](https://bitbucket.org/asmundf/gitsbe/src/master/)
 - [Drabme](https://bitbucket.org/asmundf/drabme/src/master/)
@@ -15,7 +18,7 @@ git clone https://bitbucket.org/asmundf/druglogics2.git
 mvn clean install
 ```
 
-# Run the pipeline
+# Run the Pipeline
 
 ## Input directory
 
@@ -26,13 +29,13 @@ Input filename identifier | Example filename
 training | toy_ags_training_data.tab
 config | toy_ags_config.tab
 network | toy_ags_network.sif
-drugpanel | toy_ags_drugpanel.tab
 modeloutputs | toy_ags_modeloutputs.tab
+drugpanel | toy_ags_drugpanel.tab
 perturbations | toy_ags_perturbations.tab
 
 Note that the filename only needs to contain this case insensitive identifier string in any place convenient, i.e. beginning, middle or end of filename.
 
-## Run ags example ##
+## Run ags example
 To run the pipeline with the preset example directory, from the druglogics2 root directory, run:
 ```
 java -cp ./target/druglogics2-{version}-jar-with-dependencies.jar eu.druglogics.druglogics2.Launcher example_run_ags/
