@@ -12,19 +12,19 @@ import eu.druglogics.drabme.*;
 public class Launcher {
 
 	// Gitsbe input
-	public String filenameNetwork = "";
-	public String filenameConfig = "";
-	public String filenameTrainingData = "";
-	public String directoryOutput;
+	private String filenameNetwork = "";
+	private String filenameConfig = "";
+	private String filenameTrainingData = "";
+	private String directoryOutput;
 
 	// Drabme input
-	public String projectName;
-	public String directoryModels;
-	public String filenameDrugs = "";
-	public String filenameModelOutputs = "";
-	public String filenameCombinations = "";
-	public String directoryTmpGitsbe;
-	public String directoryTmpDrabme;
+	private String projectName;
+	private String directoryModels;
+	private String filenameDrugs = "";
+	private String filenameModelOutputs = "";
+	private String filenameCombinations = "";
+	private String directoryTmpGitsbe;
+	private String directoryTmpDrabme;
 
 	public static void main(String[] args) {
 		Launcher drugLogicsLauncher = new Launcher();
@@ -71,9 +71,8 @@ public class Launcher {
 				projectName = new File(directoryInput).getName();
 
 			DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
-			Calendar calendarData = Calendar.getInstance();
 
-			directoryOutput = new File(directoryInput, projectName + "_" + dateFormat.format(calendarData.getTime()))
+			directoryOutput = new File(directoryInput, projectName + "_" + dateFormat.format(Calendar.getInstance().getTime()))
 					.getAbsolutePath();
 			directoryTmpGitsbe = new File(directoryOutput, "gitsbe_tmp").getAbsolutePath();
 			directoryTmpDrabme = new File(directoryOutput, "drabme_tmp").getAbsolutePath();
