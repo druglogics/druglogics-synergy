@@ -9,6 +9,7 @@
     <name>DrugLogics Pipeline Launcher</name>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <gitsbe.version>1.0</gitsbe.version>
         <drabme.version>1.0</drabme.version>
     </properties>
