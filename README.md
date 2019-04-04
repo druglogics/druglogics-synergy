@@ -22,7 +22,10 @@ mvn clean install
 
 ## Input directory
 
-The pipeline is launched by supplying *one argument specifying a directory*, e.g. "example_run_ags". The directory should contain all relevant input files, and not more than one copy of each. Input files are identified by filename, and should contain a specific string:
+The pipeline is launched by supplying *one argument specifying a directory*, 
+e.g. "example_run_ags". The directory should contain all relevant input files, 
+and not more than one copy of each. Input files are identified by filename, and 
+should contain a specific string:
 
 Input filename identifier | Example filename
 ------------------------- | ----------------
@@ -33,10 +36,12 @@ modeloutputs | toy_ags_modeloutputs.tab
 drugpanel | toy_ags_drugpanel.tab
 perturbations | toy_ags_perturbations.tab
 
-Note that the filename only needs to contain this case insensitive identifier string in any place convenient, i.e. beginning, middle or end of filename.
+Note that the filename only needs to contain this case insensitive identifier 
+string in any place convenient, i.e. beginning, middle or end of filename.
 
 ## Run ags example
-To run the pipeline with the preset example directory, from the druglogics2 root directory, run:
+To run the pipeline with the preset example directory, from the druglogics2 
+root directory, run:
 ```
 java -cp ./target/druglogics2-{version}-jar-with-dependencies.jar eu.druglogics.druglogics2.Launcher example_run_ags/
 ```
