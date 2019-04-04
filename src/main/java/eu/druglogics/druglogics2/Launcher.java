@@ -11,19 +11,21 @@ import eu.druglogics.drabme.*;
 
 public class Launcher {
 
-	// Gitsbe input
-	private String filenameNetwork = "";
-	private String filenameConfig = "";
-	private String filenameTrainingData = "";
+	// Global input
+	private String projectName;
 	private String directoryOutput;
 
-	// Drabme input
-	private String projectName;
-	private String directoryModels;
-	private String filenameDrugs = "";
+	// Gitsbe input
+	private String filenameNetwork = "";
+	private String filenameTrainingData = "";
 	private String filenameModelOutputs = "";
-	private String filenameCombinations = "";
+	private String filenameConfig = "";
 	private String directoryTmpGitsbe;
+
+	// Drabme input
+	private String filenameDrugs = "";
+	private String filenamePerturbations = "";
+	private String directoryModels;
 	private String directoryTmpDrabme;
 
 	public static void main(String[] args) {
@@ -31,17 +33,15 @@ public class Launcher {
 		drugLogicsLauncher.start(args);
 	}
 
-	public void start(String[] args) {
+	private void start(String[] args) {
 
 		if (environmentalVariableBNETisNULL())
 			return;
 		if (!setupAndValidateInput(args))
 			return;
 
-		Thread thread = null;
-
-		runGitsbe(thread);
-		runDrabme(thread);
+		runGitsbe();
+		runDrabme();
 	}
 
 	private boolean setupAndValidateInput(String[] args) {
@@ -58,7 +58,7 @@ public class Launcher {
 			directoryModels = args[4] + File.separator + args[5];
 			filenameDrugs = args[6];
 			filenameModelOutputs = args[7];
-			filenameCombinations = args[8];
+			filenamePerturbations = args[8];
 			directoryTmpDrabme = args[4] + File.separator + args[9];
 		} else if ((args.length == 1) || (args.length == 2)) {
 			String directoryInput = args[0];
@@ -85,11 +85,14 @@ public class Launcher {
 			System.out.println("Finding input files in directory: " + directoryInput);
 			File[] files = new File(directoryInput).listFiles();
 
-			for (int i = 0; i < files.length; i++) {
-				String filename = files[i].getName();
-				if (!loadFileFromDirectory(filename, directoryInput))
-					return false;
+			for (File file : files) {
+				if (!file.isDirectory()) {
+					String filename = file.getName();
+					if (!loadFileFromDirectory(filename, directoryInput))
+						return false;
+				}
 			}
+
 			printInputFilesMessage();
 		} else {
 			printNoArgumentsMessage();
@@ -139,12 +142,12 @@ public class Launcher {
 			}
 			filenameModelOutputs = new File(directoryInput, filename).getAbsolutePath();
 		} else if (filename.toLowerCase().contains("perturbations")) {
-			if (filenameCombinations.length() > 0) {
+			if (filenamePerturbations.length() > 0) {
 				System.out.println(
-						"Aborting, multiple perturbation files detected: " + filename + ", " + filenameCombinations);
+						"Aborting, multiple perturbation files detected: " + filename + ", " + filenamePerturbations);
 				return false;
 			}
-			filenameCombinations = new File(directoryInput, filename).getAbsolutePath();
+			filenamePerturbations = new File(directoryInput, filename).getAbsolutePath();
 		}
 		return true;
 	}
@@ -153,7 +156,7 @@ public class Launcher {
 		System.out.println("\nGitsbe input files:" + "\nConfig:       \t" + filenameConfig + "\nNetwork:      \t"
 				+ filenameNetwork + "\nTraining data:\t" + filenameTrainingData + "\nModel outputs:\t"
 				+ filenameModelOutputs + "\n\nDrabme input files:" + "\nDrugs:        \t" + filenameDrugs
-				+ "\nPerturbations:\t" + filenameCombinations + "\nModel outputs:\t" + filenameModelOutputs);
+				+ "\nPerturbations:\t" + filenamePerturbations + "\nModel outputs:\t" + filenameModelOutputs);
 		System.out.println("\nOutput directory: " + directoryOutput + "\n");
 	}
 
@@ -167,18 +170,30 @@ public class Launcher {
 				+ "<filename combinations> <directory tmp> ");
 	}
 
-	private void runDrabme(Thread thread) {
-		int verbosity = 3;
-		int combosize = 2;
-
-		thread = new Thread(new Drabme(verbosity, projectName, directoryModels, filenameDrugs, filenameCombinations,
-				filenameModelOutputs, directoryOutput, directoryTmpDrabme, false, combosize));
+	private void runDrabme() {
+		Thread thread = new Thread(new Drabme(
+				projectName,
+				filenameDrugs,
+				filenamePerturbations,
+				filenameModelOutputs,
+				filenameConfig,
+				directoryModels,
+				directoryOutput,
+				directoryTmpDrabme
+		));
 		execute(thread);
 	}
 
-	private void runGitsbe(Thread thread) {
-		thread = new Thread(new Gitsbe(projectName, filenameNetwork, filenameTrainingData, filenameModelOutputs,
-				filenameConfig, directoryOutput, directoryTmpGitsbe));
+	private void runGitsbe() {
+		Thread thread = new Thread(new Gitsbe(
+				projectName,
+				filenameNetwork,
+				filenameTrainingData,
+				filenameModelOutputs,
+				filenameConfig,
+				directoryOutput,
+				directoryTmpGitsbe
+		));
 		execute(thread);
 	}
 
