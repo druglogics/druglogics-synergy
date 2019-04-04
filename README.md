@@ -8,9 +8,10 @@ input from a directory and runs sequentially the
 ## Install
 
 Follow the installation notes in the next order:
-- [BNReduction dependencies](https://bitbucket.org/asmundf/druglogics_dep/src/master/)
-- [Gitsbe](https://bitbucket.org/asmundf/gitsbe/src/master/)
-- [Drabme](https://bitbucket.org/asmundf/drabme/src/master/)
+
+- [BNReduction dependencies](https://bitbucket.org/asmundf/druglogics_dep/src/develop/)
+- [Gitsbe](https://bitbucket.org/asmundf/gitsbe/src/develop/)
+- [Drabme](https://bitbucket.org/asmundf/drabme/src/develop/)
 
 Then run:
 ```
@@ -41,7 +42,8 @@ string in any place convenient, i.e. beginning, middle or end of filename.
 
 ## Run ags example
 To run the pipeline with the preset example directory, from the druglogics2 
-root directory, run:
+root directory, run (remember to change the `{version}` to the appropriate 
+one, e.g. `1.0`):
 ```
 java -cp ./target/druglogics2-{version}-jar-with-dependencies.jar eu.druglogics.druglogics2.Launcher example_run_ags/
 ```
