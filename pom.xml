@@ -67,6 +67,10 @@
                                 </configuration>
                             </execution>
                         </executions>
+                        <configuration>
+                            <mainClass>com.test.Startup</mainClass>
+                            <cleanupDaemonThreads>false</cleanupDaemonThreads>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
