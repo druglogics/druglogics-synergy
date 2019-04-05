@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>eu.druglogics</groupId>
-    <artifactId>druglogics2</artifactId>
+    <artifactId>synergy</artifactId>
     <packaging>jar</packaging>
     <version>1.0</version>
     <name>DrugLogics Pipeline Launcher</name>
@@ -60,9 +60,12 @@
                                     <goal>java</goal>
                                 </goals>
                                 <configuration>
-                                    <mainClass>eu.druglogics.druglogics2.Launcher</mainClass>
+                                    <mainClass>eu.druglogics.synergy.Launcher</mainClass>
                                     <arguments>
-                                        <argument>example_run_ags/</argument>
+                                        <argument>--project</argument>
+                                        <argument>example_run_ags</argument>
+                                        <argument>--inputDir</argument>
+                                        <argument>example_run_ags</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -90,6 +93,14 @@
             <groupId>eu.druglogics</groupId>
             <artifactId>drabme</artifactId>
             <version>${drabme.version}</version>
+        </dependency>
+
+        <!-- Testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
