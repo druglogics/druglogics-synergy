@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Parameters(separators = "=")
-public class CommandLineArgs {
+class CommandLineArgs {
 
     @Parameter
     private List<String> parameters = new ArrayList<>();
@@ -20,11 +20,11 @@ public class CommandLineArgs {
             description = "Directory with all input files", order = 1)
     private String directoryInput;
 
-    public String getProjectName() {
+    String getProjectName() {
         return projectName;
     }
 
-    public String getDirectoryInput() {
+    String getDirectoryInput() {
         return directoryInput;
     }
 

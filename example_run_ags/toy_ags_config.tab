@@ -6,7 +6,7 @@
 # Output verbosity level (0 = nothing - 3 = everything)
 verbosity:	3
 
-# Delete all temporary files in /tmp dir
+# Delete all files in *_tmp dirs
 delete_tmp_files:	true
 
 # If true, it will compress the log and tmp files
