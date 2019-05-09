@@ -44,7 +44,7 @@ To run the pipeline with the preset example directory, from the druglogics2
 root directory, run (remember to change the `{version}` to the appropriate 
 one, e.g. `1.0`):
 ```
-java -cp ./target/druglogics2-{version}-jar-with-dependencies.jar eu.druglogics.synergy.Launcher --project=test inputDir=example_run_ags
+java -cp ./target/synergy-{version}-jar-with-dependencies.jar eu.druglogics.synergy.Launcher --project=test --inputDir=example_run_ags
 ```
 
 or run the mvn profile:
