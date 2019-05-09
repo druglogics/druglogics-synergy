@@ -5,13 +5,13 @@
     <groupId>eu.druglogics</groupId>
     <artifactId>synergy</artifactId>
     <packaging>jar</packaging>
-    <version>1.0</version>
+    <version>1.0.1</version>
     <name>DrugLogics Pipeline Launcher</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <gitsbe.version>1.0</gitsbe.version>
-        <drabme.version>1.0</drabme.version>
+        <gitsbe.version>1.0.7</gitsbe.version>
+        <drabme.version>1.0.4</drabme.version>
     </properties>
 
     <build>
@@ -67,11 +67,14 @@
                             <execution>
                                 <phase>compile</phase>
                                 <goals>
-                                    <goal>java</goal>
+                                    <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <mainClass>eu.druglogics.synergy.Launcher</mainClass>
+                                    <executable>java</executable>
                                     <arguments>
+                                        <argument>-cp</argument>
+                                        <argument>target/synergy-${project.version}-jar-with-dependencies.jar</argument>
+                                        <argument>eu.druglogics.synergy.Launcher</argument>
                                         <argument>--project</argument>
                                         <argument>example_run_ags</argument>
                                         <argument>--inputDir</argument>
@@ -80,10 +83,6 @@
                                 </configuration>
                             </execution>
                         </executions>
-                        <configuration>
-                            <mainClass>com.test.Startup</mainClass>
-                            <cleanupDaemonThreads>false</cleanupDaemonThreads>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
