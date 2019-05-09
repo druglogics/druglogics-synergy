@@ -20,3 +20,5 @@ target/
 # generated example output directories
 example_run_ags/example_run_ags*
 example_run_ags/test*
+
+jsbml.log
