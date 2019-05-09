@@ -1,16 +1,17 @@
 package eu.druglogics.synergy;
 
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
+import eu.druglogics.drabme.Drabme;
+import eu.druglogics.gitsbe.Gitsbe;
+
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import static eu.druglogics.gitsbe.util.Util.*;
-
-import com.beust.jcommander.JCommander;
-import com.beust.jcommander.ParameterException;
-import eu.druglogics.gitsbe.*;
-import eu.druglogics.drabme.*;
+import static eu.druglogics.gitsbe.util.Util.abort;
+import static eu.druglogics.gitsbe.util.Util.getFileName;
 
 public class Launcher {
 
@@ -37,13 +38,6 @@ public class Launcher {
 	}
 
 	private void start(String[] args) {
-		try {
-			checkBNET();
-		} catch (Exception e) {
-			e.printStackTrace();
-			abort();
-		}
-
 		setupAndValidateInput(args);
 
 		runGitsbe();
@@ -86,7 +80,7 @@ public class Launcher {
 
 		} catch (ParameterException parEx) {
 			System.out.println("\nOptions preceded by an asterisk are required.");
-			parEx.getJCommander().setProgramName("eu.druglogics.druglogics2.Launcher");
+			parEx.getJCommander().setProgramName("eu.druglogics.synergy.Launcher");
 			parEx.usage();
 			abort();
 		}
