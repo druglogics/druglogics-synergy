@@ -9,7 +9,6 @@ input from a directory and runs sequentially the
 
 Follow the installation notes in the next order:
 
-- [BNReduction dependencies](https://bitbucket.org/asmundf/druglogics_dep/src/develop/)
 - [Gitsbe](https://bitbucket.org/asmundf/gitsbe/src/develop/)
 - [Drabme](https://bitbucket.org/asmundf/drabme/src/develop/)
 
