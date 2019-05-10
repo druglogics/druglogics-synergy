@@ -53,7 +53,7 @@ public class Launcher {
 			projectName = arguments.getProjectName();
 			String directoryInput = arguments.getDirectoryInput();
 
-			// projectName is not required, but we set it either way
+			// projectName is not required, but we have to set it
 			if (projectName == null) {
 				projectName = getFileName(directoryInput);
 			}

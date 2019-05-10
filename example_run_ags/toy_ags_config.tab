@@ -7,10 +7,10 @@
 verbosity:	3
 
 # Delete all files in *_tmp dirs
-delete_tmp_files:	true
+delete_tmp_files:	false
 
 # If true, it will compress the log and tmp files
-compress_log_and_tmp_files:	false
+compress_log_and_tmp_files:	true
 
 # Run simulations in parallel
 use_parallel_sim:	true
@@ -34,8 +34,8 @@ remove_input_nodes:	true
 export_to_gitsbe:	true
 export_to_sif:	true
 export_to_ginml:	true
-export_to_sbml_qual:	true
-export_to_boolnet:	true
+export_to_sbml_qual:	false
+export_to_boolnet:	false
 
 # Parameters for evolutionary algorithms
 # Number of simulations (evolutions) to run
@@ -86,8 +86,8 @@ topology_mutations_factor:	1
 models_saved:	3
 
 # Additional formats to export best models (gitsbe format is enabled by default)
-best_models_export_to_ginml:	true
-best_models_export_to_sbml_qual:	true
+best_models_export_to_ginml:	false
+best_models_export_to_sbml_qual:	false
 best_models_export_to_boolnet:	true
 
 # Threshold for saving models
