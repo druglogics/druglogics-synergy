@@ -1,9 +1,10 @@
 # druglogics2
 
-This module contains the DrugLogics Pipeline Launcher. It gets all necessary 
-input from a directory and runs sequentially the 
+This module is a Java launcher for sequentially launching the Java modules 
 [Gitsbe](https://bitbucket.org/asmundf/gitsbe/src/master/) and 
-[Drabme](https://bitbucket.org/asmundf/drabme/src/master/) modules.
+[Drabme](https://bitbucket.org/asmundf/drabme/src/master/). It gets all 
+necessary input from a directory (prior knowledge and molecular observations) 
+and produces synergy predictions for the specified perturbations.
 
 ## Install
 
