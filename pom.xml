@@ -5,13 +5,13 @@
     <groupId>eu.druglogics</groupId>
     <artifactId>synergy</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <name>DrugLogics Pipeline Launcher</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <gitsbe.version>1.0.8</gitsbe.version>
-        <drabme.version>1.0.5</drabme.version>
+        <gitsbe.version>1.0.9</gitsbe.version>
+        <drabme.version>1.0.6</drabme.version>
     </properties>
 
     <build>
