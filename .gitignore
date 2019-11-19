@@ -19,7 +19,7 @@ target/
 
 # generated example output directories
 example_run_ags/*/
-example_run_ags/*/
-ags_publication/*/
+ags_cascade_1.0/*/
+ags_cascade_2.0/*/
 
 jsbml.log
