@@ -1,0 +1,20 @@
+#Name	Target
+5Z	inhibits	MAP3K7
+AK	inhibits	AKT	AKT1	AKT2	AKT3	AKT_f
+BI	inhibits	MAPK14
+CT	inhibits	GSK3_f	GSK3A	GSK3B
+PD	inhibits	MEK_f	MAP2K1	MAP2K2	MEK1/2
+PI	inhibits	PIK3CA	PI3K
+PK	inhibits	CTNNB1
+JN	inhibits	JNK	MAPK8	MAPK9	JNK_f
+D1	inhibits	RPS6K	RPS6KA1	RPSK6A3	RPS6KA2	RSK_f
+60	inhibits	IKBKB	IKK-complex
+SB	inhibits	TGFb	TGFBR1	ACVR1
+RU	inhibits	JAK1	JAK2	JAK3	JAK_f
+D4	inhibits	CK1_f	CSNK1D	TGFBR1
+F4	inhibits	MYC
+SF	inhibits	PTEN
+ST	inhibits	STAT3
+G2	inhibits	PDPK1
+G4	inhibits	ROCK1
+P5	inhibits	SYK
