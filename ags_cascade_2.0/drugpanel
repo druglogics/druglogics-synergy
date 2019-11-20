@@ -13,7 +13,6 @@ SB	inhibits	TGFb	TGFBR1	ACVR1
 RU	inhibits	JAK1	JAK2	JAK3	JAK_f
 D4	inhibits	CK1_f	CSNK1D	TGFBR1
 F4	inhibits	MYC
-SF	inhibits	PTEN
 ST	inhibits	STAT3
 G2	inhibits	PDPK1
 G4	inhibits	ROCK1
