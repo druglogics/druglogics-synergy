@@ -15,7 +15,7 @@ Follow the installation notes in the next order:
 
 Then run:
 ```
-git clone https://bitbucket.org/asmundf/druglogics2.git
+git clone https://bitbucket.org/asmundf/druglogics-synergy.git
 mvn clean install
 ```
 
