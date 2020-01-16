@@ -5,6 +5,7 @@ import com.beust.jcommander.ParameterException;
 import eu.druglogics.drabme.Drabme;
 import eu.druglogics.gitsbe.Gitsbe;
 
+import javax.naming.ConfigurationException;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,6 +33,8 @@ public class Launcher {
 	private String directoryModels;
 	private String directoryTmpDrabme;
 
+	protected Launcher() {}
+
 	public static void main(String[] args) {
 		Launcher drugLogicsLauncher = new Launcher();
 		drugLogicsLauncher.start(args);
@@ -45,7 +48,6 @@ public class Launcher {
 	}
 
 	private void setupAndValidateInput(String[] args) {
-
 		try {
 			CommandLineArgs arguments = new CommandLineArgs();
 			JCommander.newBuilder().addObject(arguments).build().parse(args);
@@ -83,6 +85,9 @@ public class Launcher {
 			parEx.getJCommander().setProgramName("eu.druglogics.synergy.Launcher");
 			parEx.usage();
 			abort();
+		} catch (ConfigurationException configEx) {
+			configEx.printStackTrace();
+			abort();
 		}
 	}
 
@@ -94,9 +99,7 @@ public class Launcher {
 	 * @param filename
 	 * @param directoryInput
 	 */
-	private void loadFileFromDirectory(String filename, String directoryInput) {
-		boolean abort = false;
-
+	void loadFileFromDirectory(String filename, String directoryInput) throws ConfigurationException {
 		String fileID = InputFileIDs.contains(filename);
 		String filenameWithFullPath = new File(directoryInput, filename).getAbsolutePath();
 
@@ -104,63 +107,53 @@ public class Launcher {
 			switch (fileID) {
 				case "training":
 					if (filenameTrainingData.length() > 0) {
-						System.err.println("Aborting, multiple training data files detected: "
-                                + filenameWithFullPath + ", " + filenameTrainingData);
-						abort = true;
+						throw new ConfigurationException("Aborting, multiple training data files detected: "
+								+ filenameWithFullPath + ", " + filenameTrainingData);
 					} else {
 						filenameTrainingData = filenameWithFullPath;
 					}
 					break;
 				case "perturbations":
 					if (filenamePerturbations.length() > 0) {
-						System.err.println("Aborting, multiple perturbation files detected: "
+						throw new ConfigurationException("Aborting, multiple perturbation files detected: "
                                 + filenameWithFullPath + ", " + filenamePerturbations);
-						abort = true;
 					} else {
 						filenamePerturbations = filenameWithFullPath;
 					}
 					break;
 				case "modeloutputs":
 					if (filenameModelOutputs.length() > 0) {
-						System.err.println("Aborting, multiple model output files detected: "
+						throw new ConfigurationException("Aborting, multiple model output files detected: "
                                 + filenameWithFullPath + ", " + filenameModelOutputs);
-						abort = true;
 					} else {
 						filenameModelOutputs = filenameWithFullPath;
 					}
 					break;
 				case "config":
 					if (filenameConfig.length() > 0) {
-						System.err.println("Aborting, multiple config files detected: "
+						throw new ConfigurationException("Aborting, multiple config files detected: "
                                 + filenameWithFullPath + ", " + filenameConfig);
-						abort = true;
 					} else {
 						filenameConfig = filenameWithFullPath;
 					}
 					break;
 				case "drugpanel":
 					if (filenameDrugs.length() > 0) {
-						System.err.println("Aborting, multiple drug definition "
+						throw new ConfigurationException("Aborting, multiple drug definition "
                                 + "files detected: " + filenameWithFullPath + ", " + filenameDrugs);
-						abort = true;
 					} else {
 						filenameDrugs = filenameWithFullPath;
 					}
 					break;
 				case "network":
 					if (filenameNetwork.length() > 0) {
-						System.err.println("Aborting, multiple network files "
+						throw new ConfigurationException("Aborting, multiple network files "
                                 + "detected: " + filenameWithFullPath + ", " + filenameNetwork);
-						abort = true;
 					} else {
 						filenameNetwork = filenameWithFullPath;
 					}
 					break;
 			}
-		}
-
-		if (abort) {
-			abort();
 		}
 	}
 
