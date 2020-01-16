@@ -61,7 +61,7 @@ public class Launcher {
 			DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
 
 			directoryOutput = new File(directoryInput, projectName + "_" +
-					dateFormat.format(Calendar.getInstance().getTime())).getAbsolutePath();
+				dateFormat.format(Calendar.getInstance().getTime())).getAbsolutePath();
 			directoryTmpGitsbe = new File(directoryOutput, "gitsbe_tmp").getAbsolutePath();
 			directoryTmpDrabme = new File(directoryOutput, "drabme_tmp").getAbsolutePath();
 			directoryModels = new File(directoryOutput, "models").getAbsolutePath();
@@ -87,9 +87,12 @@ public class Launcher {
 	}
 
 	/**
-	 * Loads file from input directory and checks for duplicates based on the
+	 * Loads the given file from the input directory and checks for duplicates based on the
 	 * existence of specified strings in the name of the file. Returns true if there
-	 * is no duplication and file was loaded correctly
+	 * is no duplicate file with the same string ID and the file was loaded correctly.
+	 *
+	 * @param filename
+	 * @param directoryInput
 	 */
 	private void loadFileFromDirectory(String filename, String directoryInput) {
 		boolean abort = false;
@@ -192,6 +195,7 @@ public class Launcher {
 				filenameTrainingData,
 				filenameModelOutputs,
 				filenameConfig,
+				filenameDrugs,
 				directoryOutput,
 				directoryTmpGitsbe
 		));
