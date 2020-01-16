@@ -1,4 +1,4 @@
-# druglogics2
+# druglogics-synergy
 
 This module is a Java launcher for sequentially launching the Java modules 
 [Gitsbe](https://bitbucket.org/asmundf/gitsbe/src/master/) and 
