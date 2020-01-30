@@ -10,8 +10,8 @@ and produces synergy predictions for the specified perturbations.
 
 Follow the installation notes in the next order:
 
-- [Gitsbe](https://bitbucket.org/asmundf/gitsbe/src/develop/)
-- [Drabme](https://bitbucket.org/asmundf/drabme/src/develop/)
+- [Gitsbe](https://bitbucket.org/asmundf/gitsbe/src/master/)
+- [Drabme](https://bitbucket.org/asmundf/drabme/src/master/)
 
 Then run:
 ```
