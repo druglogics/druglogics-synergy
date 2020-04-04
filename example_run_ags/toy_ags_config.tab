@@ -21,7 +21,7 @@ use_parallel_sim:	true
 parallel_sim_num:	4
 
 # Tool to use for the calculation of attractors
-# Supported values: bnet_reduction, bnet_reduction_reduced, biolqm_stable_states, biolqm_trapspaces
+# Supported values: bnet_reduction, bnet_reduction_reduced, biolqm_stable_states, biolqm_trapspaces, mpbn_trapspaces
 attractor_tool:	biolqm_stable_states
 
 ### Gitsbe section
