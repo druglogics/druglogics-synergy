@@ -7,7 +7,7 @@ It gets all necessary input from a directory (prior knowledge and molecular obse
 
 Prerequisites: `maven 3.6.0` and `Java 8`.
 
-Follow the installation guide for each respectively package (and in that order):
+Follow the installation guide for each respective package (and in that order):
 
 - [Gitsbe](https://bblodfon.github.io/druglogics-doc/gitsbe-install.html)
 - [Drabme](https://bblodfon.github.io/druglogics-doc/drabme-install.html)
@@ -20,11 +20,11 @@ mvn clean install
 
 ## Example
 
-The recommended way to run this package is to use it’s Launcher. 
+The recommended way to run this package is to use it’s `Launcher`. 
 From the root directory of the repo run:
 
 ```
-java -cp ./target/synergy-1.1.1-jar-with-dependencies.jar eu.druglogics.synergy.Launcher --project=test --inputDir=example_run_ags
+java -cp ./target/synergy-1.2.0-jar-with-dependencies.jar eu.druglogics.synergy.Launcher --project=test --inputDir=example_run_ags
 ```
 
 or run the mvn profile directly (same input as the command above through the `pom.xml`):
