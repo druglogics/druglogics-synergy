@@ -1,5 +1,5 @@
 Condition
 -
 Response
-Antisurvival:0	Prosurvival:1
+globaloutput:1
 Weight:1
