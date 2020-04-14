@@ -33,6 +33,9 @@ or run the mvn profile directly (same input as the command above through the `po
 mvn compile -P runExampleAGS
 ```
 
+You can use the script `run_druglogics_synergy.sh` to run the above java command with input files from the `ags_cascade_1.0` and `ags_cascade_2.0` directories as well.
+This also offers the possibility to test various configurations as well: namely changing the number of simulations, the attractor tool and the choice of training data.
+
 ## Input
 
 Running the `druglogics-synergy` Launcher with no parameters, generates a usage message with the available options. 
