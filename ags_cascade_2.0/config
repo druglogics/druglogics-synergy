@@ -99,3 +99,5 @@ fitness_threshold:	0.1
 # this size (only used when there is no perturbations file)
 max_drug_comb_size:	2
 
+# method to use for the calculation of synergies ensemblewise and modelwise 
+synergy_method:	hsa
