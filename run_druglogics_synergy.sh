@@ -2,24 +2,24 @@
 
 # Project directory naming #
 
-# cascade_version (which cascade): {1.0, 2.0}
-# train (steady state train vs proliferation train): {ss, rand}
-# sim_num (number of simulations to run): {AnyNumber>0}
-# attr_tool (attractor-tool): {fixpoints = biolqm_stable_states, bnet = bnet_reduction_reduced, traps = biolqm_trapspaces}
-# synergy_method: {hsa, bliss}
+# `cascade_version` (which network and corresponding directory to use): {1.0, 2.0}
+# `train` (steady state train vs proliferation train): {ss, prolif}
+# `sim_num` (number of simulations to run): {AnyListOfNumbers > 0}
+# `attr_tool` (attractor-tool): {fixpoints = biolqm_stable_states, bnet = bnet_reduction_reduced, traps = biolqm_trapspaces}
+# `synergy_method` (Drabme's configuration option): {hsa, bliss}
 
-for cascade_version in 2.0
+for cascade_version in 1.0 2.0
 do
-    for train in ss
+    for train in ss prolif
     do
 	if [ $train == "ss" ]
        	then
 	    cat ags_cascade_$cascade_version/steadystate > ags_cascade_$cascade_version/training
-	elif [ $train == "rand" ]
+	elif [ $train == "prolif" ]
 	then
-	    cat ags_cascade_$cascade_version/random_train > ags_cascade_$cascade_version/training
+	    cat ags_cascade_$cascade_version/prolif_train > ags_cascade_$cascade_version/training
         fi
-	for sim_num in 100 150 200
+	for sim_num in 50 150
 	do
 	    sed_str='s/simulations:.*/simulations:\t'${sim_num}'/'
 	    sed -i $sed_str ags_cascade_$cascade_version/config
@@ -36,7 +36,7 @@ do
 		    sed -i 's/attractor_tool:.*/attractor_tool:\tbiolqm_trapspaces/' ags_cascade_$cascade_version/config
                 fi
 
-		for synergy_method in hsa
+		for synergy_method in hsa bliss
 		do
 		  sed_str='s/synergy_method:.*/synergy_method:\t'${synergy_method}'/'
 		  sed -i $sed_str ags_cascade_$cascade_version/config
