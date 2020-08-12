@@ -5,5 +5,5 @@ For more information about the network file check the respective [CASCADE reposi
 - The file `steadystate` has the AGS Gold (Literature-derived) steady state as stated in the paper above (S4 Table).
 The nodes `Prosurvival` and `Antisurvival` were removed as they do not represent *real* biological entities.
 The modeloutput 'Antisurvival' nodes `CASP9` and `FOXO_f` as well as the 'Prosurvival' node `RSK_f` were added for completeness.
-- The file `prolif_train` defines a simple rule to produce proliferating models from the simulations.
+- The file `random_train` defines a simple rule to produce (random) proliferating models from the simulations.
 - You can use one of the 2 above files for simulations by changing the `training` file, e.g.: `cat steadystate > training`.
