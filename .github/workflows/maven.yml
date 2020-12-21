@@ -1,0 +1,47 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Cache local Maven repository
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+    - name: Install Gitsbe from GitHub
+      run: |
+        gitsbe_version=$(cat pom.xml | grep -oPm1 "(?<=<gitsbe.version>)[^<]+")
+        echo $gitsbe_version
+        git clone https://github.com/druglogics/gitsbe.git
+        cd gitsbe
+        git checkout v$gitsbe_version
+        mvn clean install
+    - name: Install Drabme from GitHub
+        run: |
+          drabme_version=$(cat pom.xml | grep -oPm1 "(?<=<drabme.version>)[^<]+")
+          echo $drabme_version
+          git clone https://github.com/druglogics/drabme.git
+          cd drabme
+          git checkout v$drabme_version
+          mvn clean install
+    - name: Build and Test with Maven
+      run: mvn -B package --file pom.xml
