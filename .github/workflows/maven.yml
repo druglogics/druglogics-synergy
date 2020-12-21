@@ -36,12 +36,12 @@ jobs:
         git checkout v$gitsbe_version
         mvn clean install
     - name: Install Drabme from GitHub
-        run: |
-          drabme_version=$(cat pom.xml | grep -oPm1 "(?<=<drabme.version>)[^<]+")
-          echo $drabme_version
-          git clone https://github.com/druglogics/drabme.git
-          cd drabme
-          git checkout v$drabme_version
-          mvn clean install
+      run: |
+        drabme_version=$(cat pom.xml | grep -oPm1 "(?<=<drabme.version>)[^<]+")
+        echo $drabme_version
+        git clone https://github.com/druglogics/drabme.git
+        cd drabme
+        git checkout v$drabme_version
+        mvn clean install
     - name: Build and Test with Maven
       run: mvn -B package --file pom.xml
