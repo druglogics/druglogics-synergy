@@ -1,6 +1,6 @@
 # druglogics-synergy
 
-This package is a Java launcher for sequentially executing the [Gitsbe](https://bitbucket.org/asmundf/gitsbe/src/master/) and [Drabme](https://bitbucket.org/asmundf/drabme/src/master/) packages. 
+This package is a Java launcher for sequentially executing the [gitsbe](https://github.com/druglogics/gitsbe) and [drabme](https://github.com/druglogics/drabme) packages.
 It gets all necessary input from a directory (prior knowledge and molecular observations) and produces synergy predictions for the specified perturbations.
 
 ## Install
@@ -9,12 +9,13 @@ Prerequisites: `maven 3.6.0` and `Java 8`.
 
 Follow the installation guide for each respective package (and in that order):
 
-- [Gitsbe](https://bblodfon.github.io/druglogics-doc/gitsbe-install.html)
-- [Drabme](https://bblodfon.github.io/druglogics-doc/drabme-install.html)
+- [gitsbe](https://github.com/druglogics/gitsbe)
+- [drabme](https://github.com/druglogics/drabme)
 
-Then run:
+Then:
 ```
-git clone https://bitbucket.org/asmundf/druglogics-synergy.git
+git clone https://github.com/druglogics/druglogics-synergy
+cd druglogics-synergy
 mvn clean install
 ```
 
@@ -33,8 +34,8 @@ or run the mvn profile directly (same input as the command above through the `po
 mvn compile -P runExampleAGS
 ```
 
-You can use the script `run_druglogics_synergy.sh` to run the above java command with input files from the `ags_cascade_1.0` and `ags_cascade_2.0` directories as well.
-This script also offers the possibility to test various input configurations, namely changing the number of simulations, the attractor tool and the choice of training data.
+You can use the script [run_druglogics_synergy.sh](https://github.com/druglogics/druglogics-synergy/blob/master/run_druglogics_synergy.sh) to run the above java command with input files from the `ags_cascade_1.0` and `ags_cascade_2.0` directories as well.
+This script also offers the possibility to test various input configurations, namely changing the number of simulations, the attractor tool, the choice of training data and the method used in `drabme` for the synergy calculations.
 
 ## Input
 
