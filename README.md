@@ -24,13 +24,17 @@ cd druglogics-synergy
 mvn clean install
 ```
 
+The above command creates a package `<name>-jar-with-dependencies.jar` file with all dependencies installed, in the `target` directory.
+
+Alternatively, you could just use directly one of the [released packages](https://github.com/druglogics/druglogics-synergy/packages/).
+
 ## Example
 
 The recommended way to run this package is to use it’s `Launcher`. 
-From the root directory of the repo run:
+From the root directory of the repo run (remember to change the `{version}` to the appropriate one, e.g. `1.2.0`):
 
 ```
-java -cp ./target/synergy-1.2.0-jar-with-dependencies.jar eu.druglogics.synergy.Launcher --project=test --inputDir=example_run_ags
+java -cp ./target/synergy-{version}-jar-with-dependencies.jar eu.druglogics.synergy.Launcher --project=test --inputDir=example_run_ags
 ```
 
 or run the mvn profile directly (same input as the command above through the `pom.xml`):
