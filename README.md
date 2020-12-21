@@ -1,5 +1,10 @@
 # druglogics-synergy
 
+<!-- badges: start -->
+[![Java CI with Maven](https://github.com/druglogics/druglogics-synergy/workflows/Java%20CI%20with%20Maven/badge.svg)](https://github.com/druglogics/druglogics-synergy/actions)
+[![License](https://img.shields.io/github/license/druglogics/druglogics-synergy)](https://github.com/druglogics/druglogics-synergy/blob/master/LICENSE)
+<!-- badges: end -->
+
 This package is a Java launcher for sequentially executing the [gitsbe](https://github.com/druglogics/gitsbe) and [drabme](https://github.com/druglogics/drabme) packages.
 It gets all necessary input from a directory (prior knowledge and molecular observations) and produces synergy predictions for the specified perturbations.
 
