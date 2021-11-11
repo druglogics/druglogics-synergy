@@ -5,13 +5,13 @@
     <groupId>eu.druglogics</groupId>
     <artifactId>synergy</artifactId>
     <packaging>jar</packaging>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <name>DrugLogics Pipeline Launcher</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <gitsbe.version>1.3.0</gitsbe.version>
-        <drabme.version>1.2.0</drabme.version>
+        <gitsbe.version>1.3.1</gitsbe.version>
+        <drabme.version>1.2.1</drabme.version>
     </properties>
 
     <build>
@@ -88,16 +88,6 @@
             </build>
         </profile>
     </profiles>
-
-    <repositories>
-        <repository>
-            <id>ginsim_snapshot</id>
-            <name>GINsim snapshot repository</name>
-            <snapshots><enabled>true</enabled></snapshots>
-            <releases><enabled>false</enabled></releases>
-            <url>http://ginsim.org/maven/snapshot</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <!-- Gitsbe -->
