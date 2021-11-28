@@ -8,6 +8,10 @@
 This package is a Java launcher for sequentially executing the [gitsbe](https://github.com/druglogics/gitsbe) and [drabme](https://github.com/druglogics/drabme) packages.
 It gets all necessary input from a directory (prior knowledge and molecular observations) and produces synergy predictions for the specified perturbations.
 
+## Tutorial
+
+For examples on how to run this package and visualize the performance of the output synergy predictions see: https://druglogics.github.io/synergy-tutorial/
+
 ## Install
 
 Prerequisites: `maven 3.6.0` and `Java 8`.
