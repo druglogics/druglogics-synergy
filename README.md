@@ -35,7 +35,7 @@ Alternatively, you could just use directly one of the [released packages](https:
 ## Example
 
 The recommended way to run this package is to use its `Launcher`.
-From the root directory of the repo run (remember to change the `{version}` to the appropriate one, e.g. `1.2.0`):
+From the root directory of the repo run (remember to change the `{version}` to the appropriate one, e.g. `1.2.1`):
 
 ```
 java -cp ./target/synergy-{version}-jar-with-dependencies.jar eu.druglogics.synergy.Launcher --project=test --inputDir=example_run_ags

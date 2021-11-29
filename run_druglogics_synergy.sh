@@ -45,7 +45,7 @@ do
 		  project_name=cascade_${cascade_version}_${train}_${sim_num}sim_${attr_tool}_${synergy_method}
 		  echo START: $project_name
 		  start=`date +%s`
-		  java -cp target/synergy-1.2.0-jar-with-dependencies.jar eu.druglogics.synergy.Launcher --inputDir=ags_cascade_${cascade_version} --project=$project_name > /dev/null 2>&1
+		  java -cp target/synergy-1.2.1-jar-with-dependencies.jar eu.druglogics.synergy.Launcher --inputDir=ags_cascade_${cascade_version} --project=$project_name > /dev/null 2>&1
 		  runtime=$(($(date +%s)-$start))
 		  echo -e Execution Time: "$(($runtime / 60)) minutes\n"
 		done
