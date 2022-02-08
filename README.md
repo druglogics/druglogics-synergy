@@ -50,6 +50,29 @@ mvn compile -P runExampleAGS
 You can use the script [run_druglogics_synergy.sh](https://github.com/druglogics/druglogics-synergy/blob/master/run_druglogics_synergy.sh) to run the above java command with input files from the `ags_cascade_1.0` and `ags_cascade_2.0` directories as well.
 This script also offers the possibility to test various input configurations, namely changing the number of simulations, the attractor tool, the choice of training data and the method used in `drabme` for the synergy calculations.
 
+## Docker image
+
+Download:
+```
+docker pull bblodfon/druglogics-synergy:1.0
+```
+
+Run example:
+```
+git clone https://github.com/druglogics/druglogics-synergy
+cd druglogics-synergy
+
+docker run -v ${PWD}:/data bblodfon/druglogics-synergy:1.0 --inputDir=/data/example_run_ags
+```
+
+So you just need to mount a directory (like `druglogics-synergy` above) to a path in the docker image (`/data`) and use any sub-directory with input files (`/data/example_run_ags`) to run the `druglogics-synergy` software in one go.
+
+In case you need to access the image directly use this command:
+
+```
+docker run -v ${PWD}:/data -it --entrypoint /bin/bash bblodfon/druglogics-synergy:1.0
+```
+
 ## Input
 
 Running the `druglogics-synergy` Launcher with no parameters, generates a usage message with the available options. 
